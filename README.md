@@ -1,6 +1,6 @@
 # apidoc
 
-<code>node v8.9.1</code> 
+<code>node v8.9.1</code>
 
 #### Build Setup
 
@@ -20,5 +20,5 @@ npm run build
 * Author : [@aixinaxc][1]
 * Blog：[aixianxc-blog][2]
 
-[1]: https://blog.csdn.net/aixinaxc/
+[1]: http://www.amagic.top/
 [2]: https://blog.csdn.net/aixinaxc/
