@@ -1,15 +1,21 @@
 import Main from '../component/main/main.vue';
 import Test from '../component/test/test.vue';
-export const pageIndex = {
+import Login from '../component/login/login.vue';
+export const pageLogin = {
     path: '/',
-    name: 'index',
-    component: Main
-}
+    name: 'Login',
+    component: Login
+};
 export const pageTest = {
     path: '/test',
     name: 'test',
     component: Test
+};
+export const pageMain = {
+    path: '/main',
+    name: 'main',
+    component: Main
 }
 export const routers = [
-    pageIndex,pageTest
+    pageLogin,pageTest,pageMain
 ];

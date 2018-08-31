@@ -7,7 +7,7 @@ module.exports = {
         login: './src/views/login/login.js'
     },
     output: {
-        filename: '[name].js',
+        filename: 'assets/js/[name].js',
         path: path.join(__dirname, '../dist'), // 输出文件所在目录
         // publicPath: ''
     },
@@ -66,7 +66,8 @@ module.exports = {
                     {
                         loader: 'url-loader',
                         options: { // 配置参数
-                            limit: 1024 // 比较标准，小于标准的图片转换为 base64 代码
+                            limit: 1024, // 比较标准，小于标准的图片转换为 base64 代码
+                            name: 'assets/img/[name].[hash:8].[ext]'
                         }
                     }
                 ]
@@ -78,7 +79,7 @@ module.exports = {
                     {
                         loader: 'file-loader',
                         options: {
-                            name: 'fonts/[name].[hash:8].[ext]'
+                            name: 'assets/fonts/[name].[hash:8].[ext]'
                         }
                     }
                 ]
