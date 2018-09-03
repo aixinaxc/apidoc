@@ -42,9 +42,12 @@
                         { required: true, message: '请输入密码', trigger: 'blur' },
                         { type: 'string', min: 6, message: '密码必须大于6位', trigger: 'blur' }
                     ]
-                }
+                },
             }
         },
+        method: {
+
+        }
     }
 </script>
 
