@@ -16,7 +16,7 @@
                     </Input>
                 </FormItem>
                 <FormItem style="width: 100%">
-                    <Button type="primary" @click="handleSubmit('formInline')" style="width: 100%">登录</Button>
+                    <Button type="primary" @click="login" style="width: 100%">登录</Button>
                 </FormItem>
             </Form>
 
@@ -45,8 +45,10 @@
                 },
             }
         },
-        method: {
-
+        methods: {
+            login: function () {
+                this.$router.push({path: '/project'})
+            }
         }
     }
 </script>

@@ -122,8 +122,7 @@ export default {
     }
     .layout-nav{
         width: 420px;
-        margin: 0 auto;
-        margin-right: 20px;
+        margin: 0 20px 0 auto;
     }
 
 

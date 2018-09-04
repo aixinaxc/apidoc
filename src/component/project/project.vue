@@ -8,15 +8,16 @@
                         <Icon type="md-arrow-dropdown" />
                     </a>
                     <DropdownMenu slot="list">
-                        <DropdownItem>驴打滚</DropdownItem>
-
+                        <DropdownItem>用户中心</DropdownItem>
                     </DropdownMenu>
                 </Dropdown>
             </Header>
             <Content :style="{margin: '88px 20% 0px 20%', background: '#fff', minHeight: '500px'}">
-                <Card class="card" v-for="item in randomMovieList">
-                    {{item}}
-                </Card>
+                <div class="card" v-for="item in randomMovieList"  v-on:click="homePage()">
+                    <Card  >
+                        {{item}}
+                    </Card>
+                </div>
             </Content>
             <Footer class="layout-footer-center"></Footer>
         </Layout>
@@ -31,6 +32,12 @@
                 randomMovieList : ["测试项目1","测试项目2","测试项目3","测试项目3","测试项目3","测试项目3","测试项目3","测试项目3","测试项目3","测试项目3"]
             }
         },
+        methods: {
+            homePage: function () {
+                console.log('/home/api/list');
+                this.$router.push({path:'/home/api/list', query: { project_id: 123 }})
+            }
+        }
     }
 </script>
 
