@@ -2,26 +2,56 @@
     <div class="layout">
         <Layout >
             <Header :style="{position: 'fixed', width: '100%'}">
-                <Dropdown style="float:right ">
-                    <a href="javascript:void(0)">
-                        <Avatar style="background-color: #87d068" icon="ios-person" />
-                        <Icon type="md-arrow-dropdown" />
-                    </a>
-                    <DropdownMenu slot="list">
-                        <DropdownItem>用户中心</DropdownItem>
-                    </DropdownMenu>
-                </Dropdown>
+                <div style="width: 100%;height: 100%;">
+                    <div class="logo" style="float:left"></div>
+                    <div style="float:right ">
+                        <Dropdown >
+                            <a href="javascript:void(0)">
+                                <Avatar style="background-color: #87d068" icon="ios-person" />
+                                <Icon type="md-arrow-dropdown" />
+                            </a>
+                            <DropdownMenu slot="list">
+                                <DropdownItem>用户中心</DropdownItem>
+                            </DropdownMenu>
+                        </Dropdown>
+                    </div>
+                </div>
             </Header>
             <Content :style="{margin: '88px 20% 0px 20%', background: '#fff', minHeight: '500px'}">
-                <div class="card" v-for="item in randomMovieList"  v-on:click="homePage()">
-                    <Card  >
-                        {{item}}
-                    </Card>
+                <div style="width: 100%;height: 100%;float:left;">
+                    <div class="card" v-for="item in projectListArr"  v-on:click="homePage(item.project_id)">
+                        <Card   >
+                            {{item.project_name}}
+                        </Card>
+                    </div>
+
+                    <div style="width: 200px;height: 200px"  @click="openEdit">
+                        <Card  class="project_add" >
+
+                        </Card>
+                    </div>
+
                 </div>
             </Content>
             <Footer class="layout-footer-center"></Footer>
         </Layout>
+
+
+        <Modal
+                v-model="edit_modal"
+                title="编辑项目"
+                :loading="loading"
+                @on-ok="closeEdit">
+            <Form :model="formItem" :label-width="80">
+                <div style="margin: 5px">
+                    <FormItem label="项目名称">
+                        <Input v-model="formItem.project_name" placeholder="请输入项目名称..."></Input>
+                    </FormItem>
+                </div>
+            </Form>
+        </Modal>
     </div>
+
 </template>
 
 <script>
@@ -29,13 +59,49 @@
         name: "project",
         data() {
             return {
-                randomMovieList : ["测试项目1","测试项目2","测试项目3","测试项目3","测试项目3","测试项目3","测试项目3","测试项目3","测试项目3","测试项目3"]
+                projectListArr : [],
+                edit_modal: false,
+                loading: true,
+                formItem: {
+                    project_id:'',
+                    project_name: ''
+                }
             }
         },
+        mounted: function(){
+            this.projectList();
+        },
         methods: {
-            homePage: function () {
+            projectList: function(){
+                this.$http.get("/project/list")
+                    .then(res=>{
+                        this.projectListArr = res;
+                        console.log(this.projectListArr);
+                    })
+                    .catch(err=>{
+                        console.log(err)
+                    })
+            },
+            homePage: function (id) {
                 console.log('/home/api/list');
-                this.$router.push({path:'/home/api/list', query: { project_id: 123 }})
+                this.$router.push({path:'/home/api/list', query: { project_id: id }})
+            },
+            openEdit: function () {
+                this.edit_modal = true;
+            },
+            closeEdit: function(){
+                this.$http.post("/project/save",{
+                    project_id: this.formItem.project_id,
+                    project_name: this.formItem.project_name
+                })
+                    .then(res=>{
+                        this.edit_modal = false;
+                        this.$Message.success('编辑成功');
+                        this.projectList();
+                    })
+                    .catch(err=>{
+                        console.log(err)
+                    });
             }
         }
     }
@@ -75,5 +141,25 @@
     }
     .layout-footer-center{
         text-align: center;
+    }
+    .logo {
+        width: 200px;
+        height: 100%;
+        background: url("../../assets/img/logo.png") no-repeat;
+        background-size: 80% 80%;
+    }
+
+    .project_add{
+        width: 200px;
+        height: 200px;
+        margin: 10px;
+        padding: 10px;
+        text-align: center;
+        position:relative;
+        vertical-align: middle;
+        display:inline-block;
+        line-height:150px;
+        background: url("../../assets/img/add_icon.png") no-repeat center ;
+        background-size: 30% 30%;
     }
 </style>

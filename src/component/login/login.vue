@@ -25,7 +25,7 @@
 </template>
 
 <script>
-
+    import md5 from 'js-md5';
     export default {
         data() {
             return {
@@ -45,9 +45,33 @@
                 },
             }
         },
+        mounted: function(){
+            const user = sessionStorage.getItem("user");
+            if (user !== undefined && user !== null && user !== "") {
+                this.$router.push({path: '/project'});
+            }
+        },
         methods: {
             login: function () {
-                this.$router.push({path: '/project'})
+                console.log(md5('123456'));
+                this.formInline.password = md5(this.formInline.password);
+                console.log('new');
+                console.log(this.formInline);
+                this.$http.get("/login",{
+                    params: {
+                        username: this.formInline.user,
+                        password: this.formInline.password
+                    }
+                     })
+                    .then(res=>{
+                        console.log("res:");
+                        console.log(res);
+                        sessionStorage.setItem("user",JSON.stringify(res));
+                        this.$router.push({path: '/project'})
+                    })
+                    .catch(err=>{
+                        console.log(err)
+                    })
             }
         }
     }

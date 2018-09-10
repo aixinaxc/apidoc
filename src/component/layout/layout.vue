@@ -1,3 +1,126 @@
+<template>
+    <div class="layout">
+        <Layout>
+            <Header>
+                <Menu mode="horizontal" theme="dark" active-name="1">
+                    <div class="layout-logo" style="float: left"></div>
+                    <div class="layout-nav" style="float: left">
+                        <MenuItem name="1">
+                            <Icon type="ios-navigate"></Icon>
+                            新增分类
+                        </MenuItem>
+                        <MenuItem name="2">
+                            <Icon type="ios-keypad"></Icon>
+                            新增API
+                        </MenuItem>
+                    </div>
+
+                    <Dropdown trigger="click" @on-click="menuClick" style="float:right;margin-right: 1%" >
+                        <a href="javascript:void(0)">
+                            <Avatar style="background-color: #87d068" icon="ios-person" />
+                            <Icon type="md-arrow-dropdown" />
+                        </a>
+                        <DropdownMenu slot="list">
+                            <DropdownItem name="修改密码">修改密码</DropdownItem>
+                            <DropdownItem name="退出系统">退出系统</DropdownItem>
+                        </DropdownMenu>
+                    </Dropdown>
+                </Menu>
+            </Header>
+            <Layout :style="{padding: '0 50px'}">
+                <Breadcrumb :style="{margin: '16px 0'}">
+                    <BreadcrumbItem>Home</BreadcrumbItem>
+                    <BreadcrumbItem>Components</BreadcrumbItem>
+                    <BreadcrumbItem>Layout</BreadcrumbItem>
+                </Breadcrumb>
+                <Content :style="{padding: '24px 0', minHeight: '280px', background: '#fff'}">
+                    <Layout>
+                        <Sider hide-trigger :style="{background: '#fff'}">
+                            <Menu  active-name="1-2" theme="light" width="auto" :open-names="['专家管理']" :accordion="isAccordion" :active-name="menuName">
+                                <Submenu v-for="menu in menuList" :name="menu.name"  >
+
+                                    <template slot="title">
+                                        <Icon type="ios-navigate"></Icon>
+                                        <span>{{menu.name}}</span>
+                                    </template>
+                                    <MenuItem  v-for="child in menu.childList" :name="child.name" >
+                                        <router-link tag="li" :to="child.url">
+                                            <span>{{child.name}}</span>
+                                        </router-link>
+                                    </MenuItem>
+                                </Submenu>
+                            </Menu>
+                        </Sider>
+                        <Content :style="{padding: '24px', background: '#fff'}">
+                            <router-view></router-view>
+                        </Content>
+                    </Layout>
+                </Content>
+            </Layout>
+            <Footer class="layout-footer-center">2011-2016 &copy; ApiDoc</Footer>
+        </Layout>
+
+
+        <Modal
+                v-model="edit_modal"
+                title="编辑分类"
+                :loading="loading"
+                @on-ok="closeEdit">
+            <Form :model="formItem" :label-width="80">
+                <div style="margin: 5px">
+                    <FormItem label="分类名称">
+                        <Input v-model="formItem.project_name" placeholder="请输入分类名称..."></Input>
+                    </FormItem>
+                </div>
+            </Form>
+        </Modal>
+
+
+    </div>
+</template>
+<script>
+    export default {
+        data () {
+            return {
+                isCollapsed: false,
+                isAccordion: true,
+                menuName:"",
+                childName:"",
+                menuList: [{name:"专家管理",childList:[{name:"专家列表",url:"/home/user/list"}]},{name:"专家体系管理",childList:[{name:"专家体系列表",url:"/home/sort/list"}]},
+                    {name:"查询统计",childList:[{name:"查询统计列表",url:"/home/statisticsList/list"}]},{name:"评价指标管理",childList:[{name:"评价指标列表",url:"/home/indicator/list"}]},
+                    {name:"行为数据管理",childList:[{name:"行为数据列表",url:"/home/user/list"}]},{name:"评价模型",childList:[{name:"评价模型列表",url:"/home/user/list"}]},
+                    {name:"特征库管理",childList:[{name:"特征库列表",url:"/home/feature/list"}]},{name:"管理员管理",childList:[{name:"管理员列表",url:"/home/admin/list"}]},
+                    {name:"角色管理",childList:[{name:"角色列表",url:"/home/role/list"}]},{name:"资源管理",childList:[{name:"资源列表",url:"/home/res/list"}]},
+                    {name:"日志管理",childList:[{name:"操作日志列表",url:"/home/log/list"}]}],
+                edit_modal: false,
+                loading: true,
+                formItem: {
+                    project_id:'',
+                    project_name: ''
+                }
+            }
+        },
+        methods : {
+            openEdit: function () {
+                this.edit_modal = true;
+            },
+            closeEdit: function(){
+                this.$http.post("/sort/save",{
+                    project_id: this.formItem.project_id,
+                    project_name: this.formItem.project_name
+                })
+                    .then(res=>{
+                        this.edit_modal = false;
+                        this.$Message.success('编辑成功');
+                        this.projectList();
+                    })
+                    .catch(err=>{
+                        console.log(err)
+                    })
+            }
+        }
+    }
+</script>
 <style scoped>
     .layout{
         border: 1px solid #d7dde4;
@@ -6,122 +129,17 @@
         border-radius: 4px;
         overflow: hidden;
     }
-    .layout-header-bar{
-        background: #fff;
-        box-shadow: 0 1px 1px rgba(0,0,0,.1);
+    .layout-logo{
+        width: 200px;
+        height: 100%;
+        background: url("../../assets/img/logo.png") no-repeat;
+        background-size: 80% 80%;
     }
-    .layout-logo-left{
-        width: 90%;
-        height: 30px;
-        background: #5b6270;
-        border-radius: 3px;
-        margin: 15px auto;
+    .layout-nav{
+        width: 420px;
+        margin: 0 20px 0 auto;
     }
-    .menu-icon{
-        transition: all .3s;
+    .layout-footer-center{
+        text-align: center;
     }
-    .rotate-icon{
-        transform: rotate(-90deg);
-    }
-    .menu-item span{
-        display: inline-block;
-        overflow: hidden;
-        width: 69px;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        vertical-align: bottom;
-        transition: width .2s ease .2s;
-    }
-    .menu-item i{
-        transform: translateX(0px);
-        transition: font-size .2s ease, transform .2s ease;
-        vertical-align: middle;
-        font-size: 16px;
-    }
-    .collapsed-menu span{
-        width: 0px;
-        transition: width .2s ease;
-    }
-    .collapsed-menu i{
-        transform: translateX(5px);
-        transition: font-size .2s ease .2s, transform .2s ease .2s;
-        vertical-align: middle;
-        font-size: 22px;
-    }
-</style>
-<template>
-    <div class="layout">
-        <Layout style="position: absolute;top: 0;bottom: 0;left: 0;right: 0;">
-
-            <Sider ref="side1" hide-trigger collapsible :collapsed-width="78" v-model="isCollapsed">
-                <div style="width:100%;height: 64px;text-align: center;color:#F00">
-                    此处logo
-                </div>
-                <Menu active-name="1-2" theme="dark" width="auto" :open-names="['1']" accordion="true" :active-name="menuName">
-                    <Submenu v-for="menu in menuList" :name="menu.name"  >
-                        <template slot="title">
-                            <Icon type="ios-navigate"></Icon>
-                            {{menu.name}}
-                        </template>
-                        <MenuItem  v-for="child in menu.childList" :name="child.name" >
-                            {{child.name}}
-                        </MenuItem>
-                    </Submenu>
-                </Menu>
-            </Sider>
-            <Layout>
-                <Header :style="{padding: 0}" class="layout-header-bar">
-                    <Icon @click.native="collapsedSider" :class="rotateIcon" :style="{margin: '0 20px'}" type="md-menu" size="24"></Icon>
-                    <span style="font-size: large">api文档后台管理系统</span>
-                    <Dropdown style="float:right;margin-right: 1%">
-                        <a href="javascript:void(0)">
-                            <Avatar style="background-color: #87d068" icon="ios-person" />
-                            <Icon type="md-arrow-dropdown" />
-                        </a>
-                        <DropdownMenu slot="list">
-                            <DropdownItem>用户中心</DropdownItem>
-                            <DropdownItem>退出系统</DropdownItem>
-                        </DropdownMenu>
-                    </Dropdown>
-                </Header>
-                <Content :style="{margin: '20px', background: '#fff', minHeight: '260px'}">
-                    <router-view></router-view>
-                </Content>
-            </Layout>
-        </Layout>
-    </div>
-</template>
-<script>
-    export default {
-        data () {
-            return {
-                isCollapsed: false,
-                menuName:"",
-                childName:"",
-                menuList: [{name:"专家管理",childList:[{name:"专家列表"}]},{name:"专家体系管理",childList:[{name:"专家体系列表"}]}]
-            }
-        },
-        computed: {
-            rotateIcon () {
-                return [
-                    'menu-icon',
-                    this.isCollapsed ? 'rotate-icon' : ''
-                ];
-            },
-            menuitemClasses () {
-                return [
-                    'menu-item',
-                    this.isCollapsed ? 'collapsed-menu' : ''
-                ]
-            }
-        },
-        methods: {
-            collapsedSider () {
-                this.$refs.side1.toggleCollapse();
-            }
-        }
-    }
-</script>
-<style>
-
 </style>
