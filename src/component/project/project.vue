@@ -11,7 +11,11 @@
                                 <Icon type="md-arrow-dropdown" />
                             </a>
                             <DropdownMenu slot="list">
-                                <DropdownItem>用户中心</DropdownItem>
+                                <DropdownItem name="修改密码">修改密码</DropdownItem>
+                                <div @click="logout">
+                                    <DropdownItem name="退出系统" >退出系统</DropdownItem>
+                                </div>
+
                             </DropdownMenu>
                         </Dropdown>
                     </div>
@@ -83,8 +87,12 @@
                     })
             },
             homePage: function (id) {
+                let user = sessionStorage.getItem("user");
+                var juser = JSON.parse(user);
+                juser.project_id = id;
+                sessionStorage.setItem("user",JSON.stringify(juser));
                 console.log('/home/api/list');
-                this.$router.push({path:'/home/api/list', query: { project_id: id }})
+                this.$router.push({path:'/home', query: { project_id: id }})
             },
             openEdit: function () {
                 this.edit_modal = true;
@@ -102,6 +110,15 @@
                     .catch(err=>{
                         console.log(err)
                     });
+            },
+            logout: function () {
+                this.$http.get("/logout")
+                    .then(res=>{
+                        this.$router.push({path:'/'})
+                    })
+                    .catch(err=>{
+                        console.log(err)
+                    })
             }
         }
     }

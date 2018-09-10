@@ -19,6 +19,7 @@ axios.interceptors.request.use(config => {
                 config.params = {};
             }
             config.params.user_id = juser.UserId;
+            config.params.project_id = juser.project_id;
             config.params.token = juser.Token;
 
             console.log("config.params:");
@@ -28,6 +29,7 @@ axios.interceptors.request.use(config => {
                 config.data = {};
             }
             config.data.user_id = juser.UserId;
+            config.data.project_id = juser.project_id;
             config.data.token = juser.Token;
             config.data = qs.stringify(config.data);
             console.log("config.data:");

@@ -2,9 +2,11 @@ import Main from '../component/main/main.vue';
 import Test from '../component/test/test.vue';
 import Login from '../component/login/login.vue';
 import Project from '../component/project/project.vue';
-import Home from  '../component/layout/layout.vue';
-import ApiList from '../component/api/list.vue';
+import Layout from  '../component/layout/layout.vue';
+import ApiContent from '../component/api/content.vue';
 import ApiEdit from '../component/api/edit.vue';
+import Home from '../component/home/home.vue';
+
 export const pageLogin = {
     path: '/',
     name: 'Login',
@@ -28,15 +30,15 @@ export const pageProject = {
 export const pageHome = {
     path: '/home',
     name: 'home',
-    component: Home,
+    component: Layout,
     children: [
         {
             path: '',
-            component: ApiList
+            component: Home
         },
         {
-            path: 'api/list',
-            component: ApiList
+            path: 'api/content',
+            component: ApiContent
         },
         {
             path: 'api/edit',

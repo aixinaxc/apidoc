@@ -5,59 +5,61 @@
                 <Menu mode="horizontal" theme="dark" active-name="1">
                     <div class="layout-logo" style="float: left"></div>
                     <div class="layout-nav" style="float: left">
-                        <MenuItem name="1">
+                        <MenuItem name="1" >
                             <Icon type="ios-navigate"></Icon>
-                            新增分类
+                            <span @click="openEdit"> 新增分类</span>
                         </MenuItem>
                         <MenuItem name="2">
                             <Icon type="ios-keypad"></Icon>
-                            新增API
+                            <span @click="apiEdit"> 新增API</span>
                         </MenuItem>
                     </div>
 
-                    <Dropdown trigger="click" @on-click="menuClick" style="float:right;margin-right: 1%" >
+                    <Dropdown trigger="click"  style="float:right;margin-right: 1%" >
                         <a href="javascript:void(0)">
                             <Avatar style="background-color: #87d068" icon="ios-person" />
                             <Icon type="md-arrow-dropdown" />
                         </a>
                         <DropdownMenu slot="list">
                             <DropdownItem name="修改密码">修改密码</DropdownItem>
-                            <DropdownItem name="退出系统">退出系统</DropdownItem>
+                            <div @click="logout">
+                                <DropdownItem name="退出系统" >退出系统</DropdownItem>
+                            </div>
+
                         </DropdownMenu>
                     </Dropdown>
                 </Menu>
             </Header>
             <Layout :style="{padding: '0 50px'}">
-                <Breadcrumb :style="{margin: '16px 0'}">
+                <!--<Breadcrumb :style="{margin: '16px 0'}">
                     <BreadcrumbItem>Home</BreadcrumbItem>
                     <BreadcrumbItem>Components</BreadcrumbItem>
                     <BreadcrumbItem>Layout</BreadcrumbItem>
-                </Breadcrumb>
-                <Content :style="{padding: '24px 0', minHeight: '280px', background: '#fff'}">
+                </Breadcrumb>-->
+                <Content :style="{padding: '24px 0', minHeight: '800px', background: '#fff'}">
                     <Layout>
                         <Sider hide-trigger :style="{background: '#fff'}">
-                            <Menu  active-name="1-2" theme="light" width="auto" :open-names="['专家管理']" :accordion="isAccordion" :active-name="menuName">
-                                <Submenu v-for="menu in menuList" :name="menu.name"  >
-
+                            <Menu  active-name="1-2" theme="light" width="auto"  :accordion="isAccordion" :active-name="menuName">
+                                <Submenu v-for="menu in menuList" :name="menu.SortName"  >
                                     <template slot="title">
                                         <Icon type="ios-navigate"></Icon>
-                                        <span>{{menu.name}}</span>
+                                        <span>{{menu.SortName}}</span>
                                     </template>
-                                    <MenuItem  v-for="child in menu.childList" :name="child.name" >
-                                        <router-link tag="li" :to="child.url">
-                                            <span>{{child.name}}</span>
-                                        </router-link>
+                                    <MenuItem  v-for="child in menuChildList" :name="child.api_name" v-if="menu.SortId == child.sort_id">
+                                        <span @click="apiContent(child.api_id)">{{child.api_name}}</span>
                                     </MenuItem>
                                 </Submenu>
                             </Menu>
                         </Sider>
                         <Content :style="{padding: '24px', background: '#fff'}">
-                            <router-view></router-view>
+                            <keep-alive>
+                                <router-view :key="$route.fullPath"></router-view>
+                            </keep-alive>
                         </Content>
                     </Layout>
                 </Content>
             </Layout>
-            <Footer class="layout-footer-center">2011-2016 &copy; ApiDoc</Footer>
+            <!--<Footer class="layout-footer-center">2011-2016 &copy; ApiDoc</Footer>-->
         </Layout>
 
 
@@ -69,7 +71,7 @@
             <Form :model="formItem" :label-width="80">
                 <div style="margin: 5px">
                     <FormItem label="分类名称">
-                        <Input v-model="formItem.project_name" placeholder="请输入分类名称..."></Input>
+                        <Input v-model="formItem.sort_name" placeholder="请输入分类名称..."></Input>
                     </FormItem>
                 </div>
             </Form>
@@ -86,19 +88,18 @@
                 isAccordion: true,
                 menuName:"",
                 childName:"",
-                menuList: [{name:"专家管理",childList:[{name:"专家列表",url:"/home/user/list"}]},{name:"专家体系管理",childList:[{name:"专家体系列表",url:"/home/sort/list"}]},
-                    {name:"查询统计",childList:[{name:"查询统计列表",url:"/home/statisticsList/list"}]},{name:"评价指标管理",childList:[{name:"评价指标列表",url:"/home/indicator/list"}]},
-                    {name:"行为数据管理",childList:[{name:"行为数据列表",url:"/home/user/list"}]},{name:"评价模型",childList:[{name:"评价模型列表",url:"/home/user/list"}]},
-                    {name:"特征库管理",childList:[{name:"特征库列表",url:"/home/feature/list"}]},{name:"管理员管理",childList:[{name:"管理员列表",url:"/home/admin/list"}]},
-                    {name:"角色管理",childList:[{name:"角色列表",url:"/home/role/list"}]},{name:"资源管理",childList:[{name:"资源列表",url:"/home/res/list"}]},
-                    {name:"日志管理",childList:[{name:"操作日志列表",url:"/home/log/list"}]}],
+                menuList: [],
+                menuChildList:[],
                 edit_modal: false,
                 loading: true,
                 formItem: {
-                    project_id:'',
-                    project_name: ''
+                    sort_id:'',
+                    sort_name: ''
                 }
             }
+        },
+        mounted : function(){
+            this.sortApiList();
         },
         methods : {
             openEdit: function () {
@@ -112,7 +113,34 @@
                     .then(res=>{
                         this.edit_modal = false;
                         this.$Message.success('编辑成功');
-                        this.projectList();
+                    })
+                    .catch(err=>{
+                        console.log(err)
+                    })
+            },
+            sortApiList: function () {
+                this.$http.get("/sort/sort_api_list")
+                    .then(res=>{
+                        console.log(res);
+                        console.log(res.sort);
+                        console.log(res.api);
+                        this.menuList = res.sort;
+                        this.menuChildList = res.api;
+                    })
+                    .catch(err=>{
+                        console.log(err)
+                    })
+            },
+            apiContent: function (id) {
+                this.$router.push({path:'/home/api/content', query: { api_id: id }})
+            },
+            apiEdit: function () {
+                this.$router.push({path:'/home/api/edit'})
+            },
+            logout: function () {
+                this.$http.get("/logout")
+                    .then(res=>{
+                        this.$router.push({path:'/'})
                     })
                     .catch(err=>{
                         console.log(err)
