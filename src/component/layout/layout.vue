@@ -140,6 +140,7 @@
             logout: function () {
                 this.$http.get("/logout")
                     .then(res=>{
+                        sessionStorage.removeItem('user');
                         this.$router.push({path:'/'})
                     })
                     .catch(err=>{

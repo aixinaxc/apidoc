@@ -114,6 +114,7 @@
             logout: function () {
                 this.$http.get("/logout")
                     .then(res=>{
+                        sessionStorage.removeItem('user');
                         this.$router.push({path:'/'})
                     })
                     .catch(err=>{
@@ -141,20 +142,6 @@
         position: relative;
         border-radius: 4px;
         overflow: hidden;
-    }
-    .layout-logo{
-        width: 100px;
-        height: 30px;
-        background: #5b6270;
-        border-radius: 3px;
-        float: left;
-        position: relative;
-        top: 15px;
-        left: 20px;
-    }
-    .layout-nav{
-        width: 420px;
-        margin: 0 20px 0 auto;
     }
     .layout-footer-center{
         text-align: center;

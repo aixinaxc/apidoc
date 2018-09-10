@@ -136,7 +136,7 @@
                     api_show_content: this.api_show_content
                 })
                     .then(res=>{
-                        this.$router.push({path:'/home/api/content'})
+                        this.$router.push({path:'/home/api/content', query: { api_id: res }})
                     })
                     .catch(err=>{
                         console.log(err)
