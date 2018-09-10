@@ -149,6 +149,7 @@
     .logo {
         width: 200px;
         height: 100%;
+        margin-top: 6px;
         background: url("../../assets/img/logo.png") no-repeat;
         background-size: 80% 80%;
     }

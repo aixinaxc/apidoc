@@ -3,18 +3,19 @@
         <Layout>
             <Header>
                 <Menu mode="horizontal" theme="dark" active-name="1">
-                    <div class="layout-logo" style="float: left"></div>
-                    <div class="layout-nav" style="float: left">
-                        <MenuItem name="1" >
-                            <Icon type="ios-navigate"></Icon>
-                            <span @click="openEdit"> 新增分类</span>
-                        </MenuItem>
-                        <MenuItem name="2">
-                            <Icon type="ios-keypad"></Icon>
-                            <span @click="apiEdit"> 新增API</span>
-                        </MenuItem>
+                    <div style="float: left;display: flex">
+                        <div class="logo" ></div>
+                        <div class="layout-nav" >
+                            <MenuItem name="1" >
+                                <Icon type="ios-navigate"></Icon>
+                                <span @click="openEdit"> 新增分类</span>
+                            </MenuItem>
+                            <MenuItem name="2">
+                                <Icon type="ios-keypad"></Icon>
+                                <span @click="apiEdit"> 新增API</span>
+                            </MenuItem>
+                        </div>
                     </div>
-
                     <Dropdown trigger="click"  style="float:right;margin-right: 1%" >
                         <a href="javascript:void(0)">
                             <Avatar style="background-color: #87d068" icon="ios-person" />
@@ -158,9 +159,10 @@
         border-radius: 4px;
         overflow: hidden;
     }
-    .layout-logo{
+    .logo{
         width: 200px;
-        height: 100%;
+        height: 60px;
+        margin-top: 6px;
         background: url("../../assets/img/logo.png") no-repeat;
         background-size: 80% 80%;
     }

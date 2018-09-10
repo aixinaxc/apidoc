@@ -1,16 +1,17 @@
 import axios from 'axios'
 import qs from 'qs'
+import { Message } from 'iview'
+import { router } from '../router/index';
 axios.defaults.baseURL = 'http://192.168.2.223:9000';
 axios.defaults.withCredentials = false;
 axios.defaults.timeout = 100000;
 
 // // axios拦截器
 axios.interceptors.request.use(config => {
-    console.log("config:");
     let user = sessionStorage.getItem("user");
-    if (user !== undefined && user !== null && user !== "") {
-        console.log("user:");
-        console.log(user);
+    console.log("user:");
+    console.log(user);
+    if (user != undefined && user != "undefined" && user != null && user != "null" && user != "") {
         let juser = JSON.parse(user);
         console.log("juser:");
         console.log(juser);
@@ -51,10 +52,20 @@ axios.interceptors.response.use(response => {
         console.log("return:");
         console.log(response.data.data);
         return response.data.data
-    } else {
-        this.$Message.warning('This is a warning tip');
+    } else if(response.data.code === 402 || response.data.code === '402'){
+        console.log("return_error:");
+        console.log(response.data);
+        let msg = response.data.code + " " + response.data.msg;
+        router.push({path: '/'});
+        Message.warning(msg);
+        return Promise.reject(response.data.msg);
+    }else {
+        console.log("return_error:");
+        console.log(response.data);
+        let msg = response.data.code + " " + response.data.msg;
+        Message.warning(msg);
+        return Promise.reject(response.data.msg);
     }
-
 });
 
 
