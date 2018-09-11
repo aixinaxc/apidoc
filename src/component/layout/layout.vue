@@ -23,6 +23,9 @@
                         </a>
                         <DropdownMenu slot="list">
                             <DropdownItem name="修改密码">修改密码</DropdownItem>
+                            <div @click="useradmin">
+                                <DropdownItem name="用户中心" >用户中心</DropdownItem>
+                            </div>
                             <div @click="logout">
                                 <DropdownItem name="退出系统" >退出系统</DropdownItem>
                             </div>
@@ -147,6 +150,9 @@
                     .catch(err=>{
                         console.log(err)
                     })
+            },
+            useradmin: function () {
+                this.$router.push({path:'user/list'})
             }
         }
     }

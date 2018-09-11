@@ -6,7 +6,7 @@ import Layout from  '../component/layout/layout.vue';
 import ApiContent from '../component/api/content.vue';
 import ApiEdit from '../component/api/edit.vue';
 import Home from '../component/home/home.vue';
-
+import UserList from '../component/user/list.vue';
 export const pageLogin = {
     path: '/',
     name: 'Login',
@@ -43,6 +43,10 @@ export const pageHome = {
         {
             path: 'api/edit',
             component: ApiEdit
+        },
+        {
+            path: 'user/list',
+            component: UserList
         }
     ]
 };

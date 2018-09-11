@@ -16,7 +16,7 @@
                     </Input>
                 </FormItem>
                 <FormItem style="width: 100%">
-                    <Button type="primary" @click="login" style="width: 100%">登录</Button>
+                    <Button type="primary" @click="login('formInline')" style="width: 100%">登录</Button>
                 </FormItem>
             </Form>
 
@@ -52,26 +52,32 @@
             }
         },
         methods: {
-            login: function () {
-                console.log(md5('123456'));
-                this.formInline.password = md5(this.formInline.password);
-                console.log('new');
-                console.log(this.formInline);
-                this.$http.get("/login",{
-                    params: {
-                        username: this.formInline.user,
-                        password: this.formInline.password
+            login: function (name) {
+                this.$refs[name].validate((valid) => {
+                    if (valid) {
+                        console.log(md5('123456'));
+                        this.formInline.password = md5(this.formInline.password);
+                        console.log('new');
+                        console.log(this.formInline);
+                        this.$http.get("/login",{
+                            params: {
+                                username: this.formInline.user,
+                                password: this.formInline.password
+                            }
+                        })
+                            .then(res=>{
+                                console.log("res:");
+                                console.log(res);
+                                sessionStorage.setItem("user",JSON.stringify(res));
+                                this.$router.push({path: '/project'})
+                            })
+                            .catch(err=>{
+                                console.log(err)
+                            })
+                    } else {
+                        this.$Message.error('Fail!');
                     }
-                     })
-                    .then(res=>{
-                        console.log("res:");
-                        console.log(res);
-                        sessionStorage.setItem("user",JSON.stringify(res));
-                        this.$router.push({path: '/project'})
-                    })
-                    .catch(err=>{
-                        console.log(err)
-                    })
+                })
             }
         }
     }
@@ -83,7 +89,6 @@
         background: url("../../assets/img/loginbackground.jpeg") no-repeat;
         background-size:100% 100%;
     }
-
     .login {
         width: 300px;
         height: 250px;

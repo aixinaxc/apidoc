@@ -13,6 +13,9 @@
                             <DropdownMenu slot="list">
                                 <DropdownItem name="修改密码">修改密码</DropdownItem>
                                 <div @click="logout">
+                                    <DropdownItem name="用户中心" >用户中心</DropdownItem>
+                                </div>
+                                <div @click="logout">
                                     <DropdownItem name="退出系统" >退出系统</DropdownItem>
                                 </div>
 
@@ -77,7 +80,13 @@
         },
         methods: {
             projectList: function(){
-                this.$http.get("/project/list")
+                let user = sessionStorage.getItem("user");
+                let juser = JSON.parse(user);
+                this.$http.get("/project/list",{
+                    params: {
+                        userId:  juser.UserId
+                    }
+                })
                     .then(res=>{
                         this.projectListArr = res;
                         console.log(this.projectListArr);

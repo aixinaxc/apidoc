@@ -1,6 +1,6 @@
 <template>
     <div>
-
+        欢迎进入该系统
     </div>
 </template>
 
