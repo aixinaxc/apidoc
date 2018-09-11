@@ -22,7 +22,7 @@
                             <Icon type="md-arrow-dropdown" />
                         </a>
                         <DropdownMenu slot="list">
-                            <DropdownItem name="修改密码">修改密码</DropdownItem>
+                            <!--<DropdownItem name="修改密码">修改密码</DropdownItem>-->
                             <div @click="useradmin">
                                 <DropdownItem name="用户中心" >用户中心</DropdownItem>
                             </div>

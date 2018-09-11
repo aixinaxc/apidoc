@@ -13,27 +13,16 @@
 
         <Modal
                 v-model="project_modal"
-                title="编辑管理员"
+                title="编辑关联项目"
                 :loading="loading"
-                @on-ok="closeFeature">
+                @on-ok="closeProject">
                 <div style="margin: 5px">
                     <CheckboxGroup v-model="projectChange">
-                        <Checkbox label="twitter">
+                        <Checkbox v-for="p in projectList" :label="p.project_id">
                             <Icon type="logo-twitter"></Icon>
-                            <span>Twitter</span>
+                            <span>{{p.project_name}}</span>
                         </Checkbox>
-                        <Checkbox label="facebook">
-                            <Icon type="logo-facebook"></Icon>
-                            <span>Facebook</span>
-                        </Checkbox>
-                        <Checkbox label="github">
-                            <Icon type="logo-github"></Icon>
-                            <span>Github</span>
-                        </Checkbox>
-                        <Checkbox label="snapchat">
-                            <Icon type="logo-snapchat"></Icon>
-                            <span>Snapchat</span>
-                        </Checkbox>
+
                     </CheckboxGroup>
                 </div>
         </Modal>
@@ -166,6 +155,7 @@
         },
         mounted: function(){
             this.userList();
+            this.projectLists();
         },
         methods:{
             userList: function(){
@@ -177,10 +167,11 @@
                         console.log(err)
                     });
             },
-            projectList: function(){
+            projectLists: function(){
                 this.$http.get("/project/list")
                     .then(res=>{
-
+                        console.log("projectlist");
+                        this.projectList = res;
                     })
                     .catch(err=>{
                         console.log(err)
@@ -215,6 +206,33 @@
                         console.log(err)
                     });
 
+            },
+            closeProject: function(){
+                if (this.projectChange.length == 0) {
+                    this.$Message.warning('请选项关联项目');
+                    this.loading = false;
+                    return;
+                }
+                let projectIds = '';
+                for(let i=0;i<this.projectChange.length;i++){
+                    if(i==0){
+                        projectIds = this.projectChange[i];
+                    }else {
+                        projectIds = projectIds +","+ this.projectChange[i];
+                    }
+                }
+                this.$http.post("/user/user_project_save",{
+                    userId: this.formItem.userId,
+                    project_ids: projectIds
+                })
+                    .then(res=>{
+                        this.delete_model = false;
+                        this.$Message.success('项目关系添加成功');
+                        this.projectChange = [];
+                    })
+                    .catch(err=>{
+                        console.log(err)
+                    });
             },
             openEdit: function () {
                 this.formItem.userId = '';

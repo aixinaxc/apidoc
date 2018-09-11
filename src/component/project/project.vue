@@ -11,7 +11,7 @@
                                 <Icon type="md-arrow-dropdown" />
                             </a>
                             <DropdownMenu slot="list">
-                                <DropdownItem name="修改密码">修改密码</DropdownItem>
+                                <!--<DropdownItem name="修改密码">修改密码</DropdownItem>-->
                                 <div @click="logout">
                                     <DropdownItem name="用户中心" >用户中心</DropdownItem>
                                 </div>
@@ -25,19 +25,16 @@
                 </div>
             </Header>
             <Content :style="{margin: '88px 20% 0px 20%', background: '#fff', minHeight: '500px'}">
-                <div style="width: 100%;height: 100%;float:left;">
-                    <div class="card" v-for="item in projectListArr"  v-on:click="homePage(item.project_id)">
-                        <Card   >
+                <div style="width: 100%;height: 100%;float:left;display: flex">
+                    <div  v-for="item in projectListArr"  v-on:click="homePage(item.project_id)">
+                        <Card  class="card" >
                             {{item.project_name}}
                         </Card>
                     </div>
-
-                    <div style="width: 200px;height: 200px"  @click="openEdit">
-                        <Card  class="project_add" >
-
+                    <div class="card" @click="openEdit">
+                        <Card   class="project_add">
                         </Card>
                     </div>
-
                 </div>
             </Content>
             <Footer class="layout-footer-center"></Footer>
@@ -72,11 +69,15 @@
                 formItem: {
                     project_id:'',
                     project_name: ''
-                }
+                },
+                userId:''
             }
         },
         mounted: function(){
             this.projectList();
+            let user = sessionStorage.getItem("user");
+            let juser = JSON.parse(user);
+            this.userId = juser.UserId;
         },
         methods: {
             projectList: function(){
@@ -136,8 +137,8 @@
 
 <style scoped>
     .card {
-        width: 200px;
-        height: 200px;
+        width: 180px;
+        height: 180px;
         margin: 10px;
         text-align: center;
         position:relative;
@@ -164,10 +165,8 @@
     }
 
     .project_add{
-        width: 200px;
-        height: 200px;
-        margin: 10px;
-        padding: 10px;
+        width: 180px;
+        height: 180px;
         text-align: center;
         position:relative;
         vertical-align: middle;
