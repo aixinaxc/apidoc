@@ -12,7 +12,7 @@
                             </a>
                             <DropdownMenu slot="list">
                                 <!--<DropdownItem name="修改密码">修改密码</DropdownItem>-->
-                                <div @click="logout">
+                                <div @click="logout" v-if="this.userId == 1">
                                     <DropdownItem name="用户中心" >用户中心</DropdownItem>
                                 </div>
                                 <div @click="logout">
@@ -25,7 +25,7 @@
                 </div>
             </Header>
             <Content :style="{margin: '88px 20% 0px 20%', background: '#fff', minHeight: '500px'}">
-                <div style="width: 100%;height: 100%;float:left;display: flex">
+                <div style="width: 100%;height: 100%;display: flex;flex-wrap: wrap">
                     <div  v-for="item in projectListArr"  v-on:click="homePage(item.project_id)">
                         <Card  class="card" >
                             {{item.project_name}}

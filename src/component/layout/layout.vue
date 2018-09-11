@@ -24,7 +24,7 @@
                         <DropdownMenu slot="list">
                             <!--<DropdownItem name="修改密码">修改密码</DropdownItem>-->
                             <div @click="useradmin">
-                                <DropdownItem name="用户中心" >用户中心</DropdownItem>
+                                <DropdownItem name="用户中心" v-if="this.userId == 1">用户中心</DropdownItem>
                             </div>
                             <div @click="logout">
                                 <DropdownItem name="退出系统" >退出系统</DropdownItem>
@@ -104,6 +104,9 @@
         },
         mounted : function(){
             this.sortApiList();
+            let user = sessionStorage.getItem("user");
+            let juser = JSON.parse(user);
+            this.userId = juser.UserId;
         },
         methods : {
             openEdit: function () {
