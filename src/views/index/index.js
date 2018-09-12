@@ -10,6 +10,14 @@ Vue.use(iView);
 
 Vue.prototype.$http = axios;
 
+router.beforeEach((to, from, next) => {
+    iView.LoadingBar.start();
+    next();
+});
+
+router.afterEach(route => {
+    iView.LoadingBar.finish();
+});
 
 new Vue({ // 创建 vue 实例
   // 提供一个在页面上已经存在的 DOM 元素作为 Vue 实例挂载目标

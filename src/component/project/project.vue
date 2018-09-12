@@ -12,9 +12,9 @@
                             </a>
                             <DropdownMenu slot="list">
                                 <!--<DropdownItem name="修改密码">修改密码</DropdownItem>-->
-                                <div @click="useradmin" v-if="this.userId == 1">
+                                <!--<div @click="useradmin" v-if="this.userId == 1">
                                     <DropdownItem name="用户中心" >用户中心</DropdownItem>
-                                </div>
+                                </div>-->
                                 <div @click="logout">
                                     <DropdownItem name="退出系统" >退出系统</DropdownItem>
                                 </div>
