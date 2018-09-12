@@ -16,13 +16,16 @@
                             </MenuItem>
                         </div>
                     </div>
-                    <Dropdown trigger="click"  style="float:right;margin-right: 1%" >
+                    <Dropdown trigger="click"  style="float:right;" >
                         <a href="javascript:void(0)">
                             <Avatar style="background-color: #87d068" icon="ios-person" />
                             <Icon type="md-arrow-dropdown" />
                         </a>
                         <DropdownMenu slot="list">
                             <!--<DropdownItem name="修改密码">修改密码</DropdownItem>-->
+                            <div @click="project">
+                                <DropdownItem name="项目列表" >项目列表</DropdownItem>
+                            </div>
                             <div @click="useradmin">
                                 <DropdownItem name="用户中心" v-if="this.userId == 1">用户中心</DropdownItem>
                             </div>
@@ -163,6 +166,9 @@
             },
             useradmin: function () {
                 this.$router.push({path:'/home/user/list'})
+            },
+            project: function () {
+                this.$router.push({path: '/project'})
             }
         }
     }
