@@ -133,7 +133,7 @@
                     })
             },
             useradmin: function () {
-                this.$router.push({path:'home/user/list'})
+                this.$router.push({path:'/home/user/list'})
             }
         }
     }

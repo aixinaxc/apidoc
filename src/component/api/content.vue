@@ -1,3 +1,4 @@
+
 <template>
     <div style="">
         <Card style="min-height: 800px">
@@ -6,7 +7,6 @@
                 <Button type="error" @click="openDelete" ghost>删除API</Button>
             </div>
             <div v-html="api_show_content">
-                {{api_show_content}}
             </div>
         </Card>
 
@@ -77,58 +77,31 @@
 
     }
 </script>
-
-<style lang=less>
-
-    .layout{
-        height: 100%;
-        border: 1px solid #d7dde4;
-        background: #f5f7f9;
-        position: relative;
-        border-radius: 4px;
-        overflow: hidden;
-    }
-    .layout-logo{
-        width: 100px;
-        height: 30px;
-        background: #5b6270;
-        border-radius: 3px;
-        float: left;
-        position: relative;
-        top: 15px;
-        left: 20px;
-    }
-    .layout-nav{
-        width: 420px;
-        margin: 0 20px 0 auto;
-    }
-    p {
-        margin: 1%;
-    }
-
-    table
+<style scoped>
+    >>> table
     {
         border-collapse: collapse;
         margin: 1%;
         text-align: center;
     }
-    table td, table th
+    >>> table td, table th
     {
         border: 1px solid #cad9ea;
         color: #666;
         height: 30px;
     }
-    table thead th
+    >>> table thead th
     {
         background-color: #CCE8EB;
         width: 100px;
     }
-    table tr:nth-child(odd)
+    >>> table tr:nth-child(odd)
     {
         background: #fff;
     }
-    table tr:nth-child(even)
+    >>> table tr:nth-child(even)
     {
         background: #F5FAFA;
     }
 </style>
+
