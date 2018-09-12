@@ -41,37 +41,41 @@
                     sort_id : '',
                 },
                 sort_list: '',
-               templateApi:'请求类型： get\n' +
-                    '\n' +
-                    '请求参数：\n' +
-                    '|字段名|字段类型|备注|\n' +
-                    '|-|-|-|\n' +
-                    '|test|varchar(255)|测试|\n' +
-                    '\n' +
-                    '返回数据：\n' +
-                    '```\n' +
-                    '{\n' +
-                    '    "code":200,\n' +
-                    '    "msg":"OK",\n' +
-                    '    "total":5,\n' +
-                    '    "data":[\n' +
-                    '        {\n' +
-                    '            "project_id":"1",\n' +
-                    '            "project_name":"测试项目",\n' +
-                    '            "project_state":1,\n' +
-                    '            "created_at":0,\n' +
-                    '            "updated_at":0\n' +
-                    '        },\n' +
-                    '        {\n' +
-                    '            "project_id":"2",\n' +
-                    '            "project_name":"测试项目2",\n' +
-                    '            "project_state":1,\n' +
-                    '            "created_at":0,\n' +
-                    '            "updated_at":0\n' +
-                    '        }\n' +
-                    '    ]\n' +
-                    '}\n' +
-                    '```',
+               templateApi:'### 请求类型： get\n' +
+                   '\n' +
+                   '### 请求路径： http://127.0.0.1/login\n' +
+                   '\n' +
+                   '### 请求参数：\n' +
+                   '|字段名|字段类型|备注|\n' +
+                   '|-|-|-|\n' +
+                   '|test|varchar(255)|测试|\n' +
+                   '|name|varchar(255)|名称|\n' +
+                   '|age|int|年龄|\n' +
+                   '\n' +
+                   '### 返回数据：\n' +
+                   '```\n' +
+                   '{\n' +
+                   '    "code":200,\n' +
+                   '    "msg":"OK",\n' +
+                   '    "total":5,\n' +
+                   '    "data":[\n' +
+                   '        {\n' +
+                   '            "project_id":"1",\n' +
+                   '            "project_name":"测试项目",\n' +
+                   '            "project_state":1,\n' +
+                   '            "created_at":0,\n' +
+                   '            "updated_at":0\n' +
+                   '        },\n' +
+                   '        {\n' +
+                   '            "project_id":"2",\n' +
+                   '            "project_name":"测试项目2",\n' +
+                   '            "project_state":1,\n' +
+                   '            "created_at":0,\n' +
+                   '            "updated_at":0\n' +
+                   '        }\n' +
+                   '    ]\n' +
+                   '}\n' +
+                   '```',
             }
         },
         components: {
