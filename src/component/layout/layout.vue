@@ -95,6 +95,7 @@
                 childName:"",
                 menuList: [],
                 menuChildList:[],
+                userId:'',
                 edit_modal: false,
                 loading: true,
                 formItem: {

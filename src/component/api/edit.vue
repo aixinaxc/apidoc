@@ -89,7 +89,7 @@
             apiContent: function () {
                 console.log("api_id:");
                 console.log(this.$route.query.api_id);
-                if (this.$route.query.api_id !== undefined || this.$route.query.api_id !== null || this.$route.query.api_id !== "") {
+                if (this.$route.query.api_id !== undefined &&  this.$route.query.api_id !== null && this.$route.query.api_id !== "") {
                     this.$http.get("/api/content",{
                         params: {
                             api_id: this.$route.query.api_id
