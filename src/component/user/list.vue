@@ -61,6 +61,7 @@
     import md5 from 'js-md5';
     export default {
         name: "list",
+        inject:["reload"],
         data() {
             return {
                 columns1: [
@@ -187,6 +188,7 @@
                     .then(res=>{
                         this.edit_modal = false;
                         this.$Message.success('编辑成功');
+                        this.reload();
                     })
                     .catch(err=>{
                         console.log(err)
@@ -201,6 +203,7 @@
                     .then(res=>{
                         this.delete_model = false;
                         this.$Message.success('删除成功');
+                        this.reload();
                     })
                     .catch(err=>{
                         console.log(err)
@@ -229,6 +232,7 @@
                         this.delete_model = false;
                         this.$Message.success('项目关系添加成功');
                         this.projectChange = [];
+                        this.reload();
                     })
                     .catch(err=>{
                         console.log(err)
