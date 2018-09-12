@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="be1033c7-a320-4cfa-913a-d7b76bcd8a40" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/src/views/index/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/index/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -61,7 +61,7 @@
           <entry key="js" value="18" />
           <entry key="json" value="2" />
           <entry key="lock" value="1" />
-          <entry key="md" value="1" />
+          <entry key="md" value="2" />
           <entry key="png" value="3" />
           <entry key="ts" value="1" />
           <entry key="vue" value="17" />
@@ -73,7 +73,7 @@
           <entry key="Image" value="4" />
           <entry key="JSON" value="2" />
           <entry key="JavaScript" value="18" />
-          <entry key="PLAIN_TEXT" value="2" />
+          <entry key="PLAIN_TEXT" value="3" />
           <entry key="TypeScript" value="1" />
           <entry key="Vue.js" value="17" />
           <entry key="yarn.lock" value="1" />
@@ -84,7 +84,7 @@
           <entry key="gitignore" value="9" />
           <entry key="html" value="13" />
           <entry key="js" value="1160" />
-          <entry key="md" value="58" />
+          <entry key="md" value="134" />
           <entry key="vue" value="4607" />
         </counts>
       </usages-collector>
@@ -92,7 +92,7 @@
         <counts>
           <entry key="HTML" value="13" />
           <entry key="JavaScript" value="1160" />
-          <entry key="PLAIN_TEXT" value="67" />
+          <entry key="PLAIN_TEXT" value="143" />
           <entry key="Vue.js" value="4607" />
         </counts>
       </usages-collector>
@@ -158,11 +158,20 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/views/index/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="114">
-              <caret line="6" column="18" selection-start-line="6" selection-start-column="18" selection-end-line="6" selection-end-column="18" />
+            <state relative-caret-position="228">
+              <caret line="12" column="7" lean-forward="true" selection-start-line="12" selection-start-column="7" selection-end-line="12" selection-end-column="7" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/README.md">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="171">
+              <caret line="9" column="16" selection-start-line="9" selection-start-column="16" selection-end-line="9" selection-end-column="16" />
             </state>
           </provider>
         </entry>
@@ -176,24 +185,6 @@
                 <element signature="n#style#0;n#Card#0;n#div#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#0;n#Card#0;n#div#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#0;n#Form#0;n#Modal#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/component/api/edit.vue">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-340">
-              <caret line="14" column="74" selection-start-line="14" selection-start-column="70" selection-end-line="14" selection-end-column="74" />
-              <folding>
-                <element signature="n#style#0;n#Card#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#Card#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#1;n#Card#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#FormItem#0;n#Form#0;n#div#1;n#Card#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#FormItem#1;n#Form#0;n#div#1;n#Card#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#mavon-editor#0;n#div#2;n#Card#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="e#201#243#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -286,7 +277,6 @@
         <option value="$PROJECT_DIR$/src/views/login/login.js" />
         <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/.gitignore" />
-        <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/build/webpack.base.config.js" />
         <option value="$PROJECT_DIR$/build/webpack.prod.config.js" />
         <option value="$PROJECT_DIR$/src/test/testdata.js" />
@@ -304,6 +294,7 @@
         <option value="$PROJECT_DIR$/src/component/layout/layout.vue" />
         <option value="$PROJECT_DIR$/src/component/user/list.vue" />
         <option value="$PROJECT_DIR$/src/views/index/index.html" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
@@ -543,12 +534,12 @@
       <workItem from="1535097632713" duration="55974000" />
       <workItem from="1535674903945" duration="593000" />
       <workItem from="1535676489024" duration="8969000" />
-      <workItem from="1535694360517" duration="123073000" />
+      <workItem from="1535694360517" duration="123355000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="188609000" />
+    <option name="totallyTimeSpent" value="188891000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -559,12 +550,12 @@
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info active="true" content_ui="combo" id="Project" order="3" sideWeight="0.49830508" visible="true" weight="0.2528978" />
       <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Terminal" order="1" sideWeight="0.48314014" weight="0.29934925" />
-      <window_info anchor="bottom" id="Event Log" order="2" sideWeight="0.4963119" side_tool="true" visible="true" weight="0.31236443" />
-      <window_info anchor="bottom" id="Version Control" order="3" sideWeight="0.49736565" weight="0.329718" />
+      <window_info anchor="bottom" id="Terminal" order="1" sideWeight="0.48261327" visible="true" weight="0.29934925" />
+      <window_info anchor="bottom" id="Event Log" order="2" sideWeight="0.51738673" side_tool="true" visible="true" weight="0.29934925" />
+      <window_info anchor="bottom" id="Version Control" order="3" sideWeight="0.49683878" weight="0.329718" />
       <window_info anchor="bottom" id="Message" order="4" />
       <window_info anchor="bottom" id="Find" order="5" sideWeight="0.49841937" weight="0.3297062" />
-      <window_info anchor="bottom" id="Run" order="6" sideWeight="0.5036881" visible="true" weight="0.31236443" />
+      <window_info anchor="bottom" id="Run" order="6" sideWeight="0.5036881" weight="0.31236443" />
       <window_info anchor="bottom" id="Debug" order="7" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="8" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="9" weight="0.4" />
@@ -671,13 +662,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1482">
           <caret line="78" column="69" selection-start-line="78" selection-start-column="32" selection-end-line="78" selection-end-column="69" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="207">
-          <caret line="18" column="16" selection-start-line="18" selection-start-column="16" selection-end-line="18" selection-end-column="16" />
         </state>
       </provider>
     </entry>
@@ -904,8 +888,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/views/index/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="114">
-          <caret line="6" column="18" selection-start-line="6" selection-start-column="18" selection-end-line="6" selection-end-column="18" />
+        <state relative-caret-position="228">
+          <caret line="12" column="7" lean-forward="true" selection-start-line="12" selection-start-column="7" selection-end-line="12" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="171">
+          <caret line="9" column="16" selection-start-line="9" selection-start-column="16" selection-end-line="9" selection-end-column="16" />
         </state>
       </provider>
     </entry>

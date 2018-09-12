@@ -2,6 +2,14 @@
 
 <code>node v8.9.1</code> &nbsp; <code>iview 3.0.1</code> &nbsp; <code>webpack 4.17.1</code>
 
+#### 测试地址：
+     http://apidoc.amagic.top
+
+#### 账号密码：
+                admin
+                123456
+
+
 #### Build Setup
 
 ``` bash
