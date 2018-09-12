@@ -44,12 +44,12 @@
                     <Layout>
                         <Sider hide-trigger :style="{background: '#fff'}">
                             <Menu  active-name="1-2" theme="light" width="auto"  :accordion="isAccordion" :active-name="menuName">
-                                <Submenu v-for="menu in menuList" :name="menu.SortName"  >
+                                <Submenu v-for="menu in menuList" :name="menu.sort_name"  >
                                     <template slot="title">
                                         <Icon type="ios-navigate"></Icon>
-                                        <span>{{menu.SortName}}</span>
+                                        <span>{{menu.sort_name}}</span>
                                     </template>
-                                    <MenuItem  v-for="child in menuChildList" :name="child.api_name" v-if="menu.SortId == child.sort_id">
+                                    <MenuItem  v-for="child in menuChildList" :name="child.api_name" v-if="menu.sort_id == child.sort_id">
                                         <span @click="apiContent(child.api_id)">{{child.api_name}}</span>
                                     </MenuItem>
                                 </Submenu>
@@ -86,6 +86,7 @@
 </template>
 <script>
     export default {
+        inject:["reload"],
         data () {
             return {
                 isCollapsed: false,
@@ -115,11 +116,12 @@
             closeEdit: function(){
                 this.$http.post("/sort/save",{
                     project_id: this.formItem.project_id,
-                    project_name: this.formItem.project_name
+                    sort_name: this.formItem.sort_name
                 })
                     .then(res=>{
                         this.edit_modal = false;
                         this.$Message.success('编辑成功');
+                        this.reload();
                     })
                     .catch(err=>{
                         console.log(err)

@@ -61,6 +61,7 @@
 <script>
     export default {
         name: "project",
+        inject:["reload"],
         data() {
             return {
                 projectListArr : [],
@@ -115,7 +116,7 @@
                     .then(res=>{
                         this.edit_modal = false;
                         this.$Message.success('编辑成功');
-                        this.projectList();
+                        this.reload();
                     })
                     .catch(err=>{
                         console.log(err)
