@@ -109,6 +109,10 @@
                 this.edit_modal = true;
             },
             closeEdit: function(){
+                if( this.formItem.project_name == undefined ||  this.formItem.project_name == null ||  this.formItem.project_name == ""){
+                    this.$Message.error('项目名称不能为空');
+                    return;
+                }
                 this.$http.post("/project/save",{
                     project_id: this.formItem.project_id,
                     project_name: this.formItem.project_name

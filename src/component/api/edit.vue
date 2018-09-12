@@ -115,6 +115,10 @@
             sortList: function () {
                 let user = sessionStorage.getItem("user");
                 let juser = JSON.parse(user);
+                if(juser.project_id == undefined || juser.project_id == null || juser.project_id== ""){
+                    this.$Message.error('项目id丢失');
+                    return;
+                }
                 this.$http.get("/sort/list",{
                     params: {
                         project_id: juser.project_id
@@ -130,7 +134,19 @@
             apiSave: function () {
                 let user = sessionStorage.getItem("user");
                 let juser = JSON.parse(user);
-
+                if(this.formItem.sort_id == undefined || this.formItem.sort_id == null || this.formItem.sort_id == ""){
+                    this.$Message.error('请选择分类');
+                    return;
+                }else if(juser.project_id == undefined || juser.project_id == null || juser.project_id== ""){
+                    this.$Message.error('项目id丢失');
+                    return;
+                }else if(this.formItem.api_name || this.formItem.api_name || this.formItem.api_name == ""){
+                    this.$Message.error('API名称不能为空');
+                    return;
+                }else if(this.api_edit_content || this.api_edit_content || this.api_edit_content == ""){
+                    this.$Message.error('API内容不能为空');
+                    return;
+                }
                 this.$http.post("/api/save",{
                     api_id : this.$route.query.api_id,
                     sort_id : this.formItem.sort_id,

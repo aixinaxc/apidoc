@@ -39,7 +39,7 @@
                         <Input v-model="formItem.name" placeholder="请输入管理员名称..."></Input>
                     </FormItem>
                     <FormItem label="密码">
-                        <Input v-model="formItem.password" placeholder="请输入密码..."></Input>
+                        <Input type="password" v-model="formItem.password" placeholder="请输入密码..."></Input>
                     </FormItem>
                 </div>
             </Form>
@@ -179,6 +179,13 @@
                     });
             },
             closeFeature: function(){
+                if(this.formItem.name == undefined || this.formItem.name == null || this.formItem.name == ""){
+                    this.$Message.error('登录名称不能为空');
+                    return;
+                }else if(this.formItem.password == undefined || this.formItem.password == null || this.formItem.password == ""){
+                    this.$Message.error('密码不能为空');
+                    return;
+                }
                 this.formItem.password = md5(this.formItem.password);
                 this.$http.post("/user/save",{
                     userId : this.formItem.userId,

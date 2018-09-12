@@ -115,6 +115,10 @@
                 this.edit_modal = true;
             },
             closeEdit: function(){
+                if(this.formItem.sort_name == undefined || this.formItem.sort_name == null || this.formItem.sort_name == ""){
+                    this.$Message.error('分类名称不能为空');
+                    return;
+                }
                 this.$http.post("/sort/save",{
                     project_id: this.formItem.project_id,
                     sort_name: this.formItem.sort_name
