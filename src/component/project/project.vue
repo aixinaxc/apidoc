@@ -12,7 +12,7 @@
                             </a>
                             <DropdownMenu slot="list">
                                 <!--<DropdownItem name="修改密码">修改密码</DropdownItem>-->
-                                <div @click="logout" v-if="this.userId == 1">
+                                <div @click="useradmin" v-if="this.userId == 1">
                                     <DropdownItem name="用户中心" >用户中心</DropdownItem>
                                 </div>
                                 <div @click="logout">
@@ -130,6 +130,9 @@
                     .catch(err=>{
                         console.log(err)
                     })
+            },
+            useradmin: function () {
+                this.$router.push({path:'home/user/list'})
             }
         }
     }

@@ -46,10 +46,10 @@
             }
         },
         mounted: function(){
-            const user = sessionStorage.getItem("user");
+            /*const user = sessionStorage.getItem("user");
             if (user !== undefined && user !== null && user !== "") {
                 this.$router.push({path: '/project'});
-            }
+            }*/
         },
         methods: {
             login: function (name) {
@@ -59,11 +59,9 @@
                         this.formInline.password = md5(this.formInline.password);
                         console.log('new');
                         console.log(this.formInline);
-                        this.$http.get("/login",{
-                            params: {
-                                username: this.formInline.user,
-                                password: this.formInline.password
-                            }
+                        this.$http.post("/login",{
+                            username: this.formInline.user,
+                            password: this.formInline.password
                         })
                             .then(res=>{
                                 console.log("res:");
@@ -73,7 +71,7 @@
                             })
                             .catch(err=>{
                                 console.log(err)
-                            })
+                            });
                     } else {
                         this.$Message.error('Fail!');
                     }

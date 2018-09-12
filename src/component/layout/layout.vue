@@ -155,7 +155,7 @@
                     })
             },
             useradmin: function () {
-                this.$router.push({path:'user/list'})
+                this.$router.push({path:'home/user/list'})
             }
         }
     }

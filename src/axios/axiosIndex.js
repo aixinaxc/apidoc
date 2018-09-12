@@ -2,7 +2,7 @@ import axios from 'axios'
 import qs from 'qs'
 import { Message } from 'iview'
 import { router } from '../router/index';
-axios.defaults.baseURL = 'http://192.168.2.223:9000';
+axios.defaults.baseURL = '';
 axios.defaults.withCredentials = false;
 axios.defaults.timeout = 100000;
 
@@ -24,7 +24,7 @@ axios.interceptors.request.use(config => {
             config.params.token = juser.Token;
 
             console.log("config.params:");
-            console.log(user);
+            console.log(config.params);
         }else if(config.method === "post"){
             if(config.data === undefined){
                 config.data = {};
@@ -32,12 +32,11 @@ axios.interceptors.request.use(config => {
             config.data.user_id = juser.UserId;
             config.data.project_id = juser.project_id;
             config.data.token = juser.Token;
-            config.data = qs.stringify(config.data);
             console.log("config.data:");
-            console.log(user);
+            console.log(config.data);
         }
     }
-
+    config.data = qs.stringify(config.data);
     //config.params = qs.stringify(config.params);
     /*config.headers={
         "Content-Type":"application/x-www-form-urlencoded"
