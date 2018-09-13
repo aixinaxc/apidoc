@@ -1,14 +1,13 @@
 
 <template>
-    <div style="">
-        <Card style="min-height: 800px">
-            <div style="width: 100%;height: 64px;text-align: left;">
-                <Button type="primary" @click="apiEdit" ghost>编辑API</Button>
-                <Button type="error" @click="openDelete" ghost>删除API</Button>
-            </div>
-            <div v-html="api_show_content">
-            </div>
-        </Card>
+    <div style="max-width: 900px">
+        <div style="width: 100%;height: 64px;text-align: left;">
+            <Button type="primary" @click="apiEdit" ghost>编辑API</Button>
+            <Button type="error" @click="openDelete" ghost>删除API</Button>
+        </div>
+        <div v-html="api_show_content">
+        </div>
+
 
         <Modal
                 v-model="delete_modal"

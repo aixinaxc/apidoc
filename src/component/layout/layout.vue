@@ -37,32 +37,38 @@
                     </Dropdown>
                 </Menu>
             </Header>
-            <Layout :style="{padding: '0 50px'}">
+            <Layout :style="{padding: '0'}">
                 <!--<Breadcrumb :style="{margin: '16px 0'}">
                     <BreadcrumbItem>Home</BreadcrumbItem>
                     <BreadcrumbItem>Components</BreadcrumbItem>
                     <BreadcrumbItem>Layout</BreadcrumbItem>
                 </Breadcrumb>-->
-                <Content :style="{padding: '24px 0', minHeight: '800px', background: '#fff'}">
+                <Content :style="{padding: '0 0',  background: '#fff',height:'100%'}">
                     <Layout>
                         <Sider hide-trigger :style="{background: '#fff'}">
-                            <Menu  active-name="1-2" theme="light" width="auto"  :accordion="isAccordion" :active-name="menuName">
+                            <Menu  active-name="1-2" theme="light" width="auto"  :accordion="isAccordion" :active-name="menuName" @on-select="apiContent">
                                 <Submenu v-for="menu in menuList" :name="menu.sort_name"  >
                                     <template slot="title">
                                         <Icon type="ios-navigate"></Icon>
                                         <span>{{menu.sort_name}}</span>
                                     </template>
-                                    <MenuItem  v-for="child in menuChildList" :name="child.api_name" v-if="menu.sort_id == child.sort_id">
-                                        <span @click="apiContent(child.api_id)">{{child.api_name}}</span>
+                                    <MenuItem v-for="child in menuChildList" :name="child.api_id" v-if="menu.sort_id == child.sort_id" >
+                                        <span >{{child.api_name}}</span>
                                     </MenuItem>
+
                                 </Submenu>
                             </Menu>
                         </Sider>
-                        <Content :style="{padding: '24px', background: '#fff'}">
-                            <keep-alive>
-                                <router-view :key="$route.fullPath"></router-view>
-                            </keep-alive>
-                        </Content>
+
+                        <div class="outer" >
+                            <Content class="content" ref="cont">
+                                <keep-alive>
+                                    <router-view :key="$route.fullPath"></router-view>
+                                </keep-alive>
+                            </Content>
+                        </div>
+
+
                     </Layout>
                 </Content>
             </Layout>
@@ -104,10 +110,12 @@
                 formItem: {
                     sort_id:'',
                     sort_name: ''
-                }
+                },
+                Height:0,
             }
         },
         mounted : function(){
+            this.Height = window.innerHeight - this.$refs['cont'].offsetTop - 160;
             this.sortApiList();
             let user = sessionStorage.getItem("user");
             let juser = JSON.parse(user);
@@ -190,9 +198,28 @@
     }
     .layout-nav{
         width: 420px;
-        margin: 0 20px 0 auto;
+        margin: 0 20px 0 0;
     }
     .layout-footer-center{
         text-align: center;
     }
+
+    .outer {
+        width: 100%;
+        height:550px;
+        display: table;
+        overflow: hidden;
+    }
+    .content {
+        width: 110%;
+        /*margin-right: -15px;*/
+        height: 550px;
+        margin:0 10px;
+        padding-top:15px;
+        padding-left: 50px;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+
 </style>

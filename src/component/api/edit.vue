@@ -1,27 +1,25 @@
 <template>
-    <div>
-        <Card  style="min-height: 800px">
-            <div style="width: 100%;height: 64px;text-align: left;">
-                <Button type="primary" @click="apiSave" ghost>保存API</Button>
-                <Button type="success" @click="apiTemplate" ghost>模板API</Button>
-                <Button type="warning" @click="openJsonModel" ghost>JSON格式化</Button>
-            </div>
-            <div style="width: 100%;height: 64px;text-align: left;z-index:9999" >
-                <Form :model="formItem" :label-width="80" inline>
-                    <FormItem label="API名称" style="width: 20%">
-                        <Input v-model="formItem.api_name" placeholder="请输入API名称..."  :value="formItem.api_name"></Input>
-                    </FormItem>
-                    <FormItem label="分类" style="width: 20%">
-                        <Select v-model="formItem.sort_id">
-                            <Option v-for="sort in sort_list" :value="sort.sort_id" >{{sort.sort_name}}</Option>
-                        </Select>
-                    </FormItem>
-                </Form>
-            </div>
-            <div >
-                <mavon-editor :ishljs = "true" v-model="value" @change="editData" style="height:600px;z-index:100"/>
-            </div>
-        </Card>
+    <div style="width: 100%;height: 100%">
+        <div style="width: 100%;height: 64px;text-align: left;">
+            <Button type="primary" @click="apiSave" ghost>保存API</Button>
+            <Button type="success" @click="apiTemplate" ghost>模板API</Button>
+            <Button type="warning" @click="openJsonModel" ghost>JSON格式化</Button>
+        </div>
+        <div style="width: 100%;height: 64px;text-align: left;z-index:9999" >
+            <Form :model="formItem" :label-width="80" inline>
+                <FormItem label="API名称" style="width: 20%">
+                    <Input v-model="formItem.api_name" placeholder="请输入API名称..."  :value="formItem.api_name"></Input>
+                </FormItem>
+                <FormItem label="分类" style="width: 20%">
+                    <Select v-model="formItem.sort_id">
+                        <Option v-for="sort in sort_list" :value="sort.sort_id" >{{sort.sort_name}}</Option>
+                    </Select>
+                </FormItem>
+            </Form>
+        </div>
+        <div style="width:auto;max-width: 900px;height:100%;">
+            <mavon-editor :ishljs = "true" v-model="value" @change="editData" style="height:500px;z-index:100"/>
+        </div>
         <Modal v-model="json_modal" width="360">
             <p slot="header" style="color:#f60;text-align:center">
                 <Icon type="ios-information-circle"></Icon>
