@@ -42,6 +42,7 @@
     import 'mavon-editor/dist/css/index.css'
     export default {
         name: "edit",
+        inject:["reload"],
         data() {
             return {
                 text: this.$store.state.text,
@@ -162,10 +163,10 @@
                 }else if(juser.project_id == undefined || juser.project_id == null || juser.project_id== ""){
                     this.$Message.error('项目id丢失');
                     return;
-                }else if(this.formItem.api_name || this.formItem.api_name || this.formItem.api_name == ""){
+                }else if(this.formItem.api_name == undefined || this.formItem.api_name == null || this.formItem.api_name == ""){
                     this.$Message.error('API名称不能为空');
                     return;
-                }else if(this.api_edit_content || this.api_edit_content || this.api_edit_content == ""){
+                }else if(this.api_edit_content == undefined || this.api_edit_content == null || this.api_edit_content == ""){
                     this.$Message.error('API内容不能为空');
                     return;
                 }
@@ -179,6 +180,7 @@
                 })
                     .then(res=>{
                         this.$router.push({path:'/home/api/content', query: { api_id: res }})
+                        this.reload();
                     })
                     .catch(err=>{
                         console.log(err)
