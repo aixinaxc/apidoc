@@ -4,6 +4,7 @@
             <div style="width: 100%;height: 64px;text-align: left;">
                 <Button type="primary" @click="apiSave" ghost>保存API</Button>
                 <Button type="success" @click="apiTemplate" ghost>模板API</Button>
+                <Button type="warning" @click="openJsonModel" ghost>JSON格式化</Button>
             </div>
             <div style="width: 100%;height: 64px;text-align: left;z-index:9999" >
                 <Form :model="formItem" :label-width="80" inline>
@@ -21,6 +22,18 @@
                 <mavon-editor :ishljs = "true" v-model="value" @change="editData" style="height:600px;z-index:100"/>
             </div>
         </Card>
+        <Modal v-model="json_modal" width="360">
+            <p slot="header" style="color:#f60;text-align:center">
+                <Icon type="ios-information-circle"></Icon>
+                <span>JSON 格式化</span>
+            </p>
+            <div style="text-align:center">
+                <Input v-model="json_str" placeholder="请输入项目名称..." type="textarea" :autosize="{minRows: 15,maxRows: 30}"></Input>
+            </div>
+            <div slot="footer">
+
+            </div>
+        </Modal>
     </div>
 </template>
 
@@ -36,6 +49,8 @@
                 value:'',
                 api_edit_content: '',
                 api_show_content: '',
+                json_str:'',
+                json_modal: false,
                 formItem : {
                     api_name : '',
                     sort_id : '',
@@ -84,6 +99,13 @@
         mounted: function(){
             this.apiContent();
             this.sortList();
+
+        },
+        watch:{
+            json_str : function (v) {
+                console.log(v);
+                this.json_str = JSON.stringify(JSON.parse(v), null, 4);
+            }
         },
         methods: {
             apiContent: function () {
@@ -164,6 +186,9 @@
             },
             apiTemplate: function () {
                 this.value = this.templateApi;
+            },
+            openJsonModel: function () {
+                this.json_modal = true
             }
         }
     }
