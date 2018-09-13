@@ -2,7 +2,7 @@ import axios from 'axios'
 import qs from 'qs'
 import { Message } from 'iview'
 import { router } from '../router/index';
-axios.defaults.baseURL = 'http://192.168.2.223:9001';
+axios.defaults.baseURL = '';
 axios.defaults.withCredentials = false;
 axios.defaults.timeout = 100000;
 
@@ -37,30 +37,19 @@ axios.interceptors.request.use(config => {
         }
     }
     config.data = qs.stringify(config.data);
-    //config.params = qs.stringify(config.params);
-    /*config.headers={
-        "Content-Type":"application/x-www-form-urlencoded"
-    }*/
-
     return config
 });
 
 axios.interceptors.response.use(response => {
+    console.log("response:");
+    console.log(response.data);
     // 在这里你可以判断后台返回数据携带的请求码
     if (response.data.code === 200 || response.data.code === '200') {
-        console.log("return:");
-        console.log(response.data.data);
         return response.data.data
     } else if(response.data.code === 402 || response.data.code === '402'){
-        console.log("return_error:");
-        console.log(response.data);
-        let msg = response.data.code + " " + response.data.msg;
         router.push({path: '/'});
-        Message.warning(msg);
         return Promise.reject(response.data.msg);
     }else {
-        console.log("return_error:");
-        console.log(response.data);
         let msg = response.data.code + " " + response.data.msg;
         Message.warning(msg);
         return Promise.reject(response.data.msg);
