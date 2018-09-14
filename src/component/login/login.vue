@@ -85,10 +85,9 @@
 
 
     .loginbackground {
-        width: 100%;
         height: 100%;
-        background-size: cover;
-        background: url("../../assets/img/loginbackground.jpeg") no-repeat  ;
+        background: url("../../assets/img/loginbackground.jpeg") no-repeat;
+        background-size: 100% 100%;
     }
     .login {
         width: 300px;

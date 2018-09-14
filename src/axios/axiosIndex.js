@@ -2,7 +2,7 @@ import axios from 'axios'
 import qs from 'qs'
 import { Message } from 'iview'
 import { router } from '../router/index';
-axios.defaults.baseURL = '';
+axios.defaults.baseURL = 'http://192.168.2.223:9001';
 axios.defaults.withCredentials = false;
 axios.defaults.timeout = 100000;
 

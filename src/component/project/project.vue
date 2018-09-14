@@ -24,7 +24,7 @@
                     </div>
                 </div>
             </Header>
-            <Content :style="{margin: '88px 20% 0px 20%', background: '#fff', minHeight: '500px'}">
+            <Content :style="{margin: '88px 20% 0px 20%', background: '#fff', minHeight: '700px'}">
                 <div style="width: 100%;height: 100%;display: flex;flex-wrap: wrap">
                     <div  v-for="item in projectListArr"  v-on:click="homePage(item.project_id)">
                         <Card  class="card" >
@@ -39,7 +39,7 @@
             </Content>
             <Footer class="layout-footer-center"></Footer>
         </Layout>
-
+        <Footer class="layout-footer-center">2018-2028 &copy; API文档管理系统</Footer>
 
         <Modal
                 v-model="edit_modal"
