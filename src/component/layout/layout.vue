@@ -1,7 +1,7 @@
 <template>
-    <div class="layout">
+    <Layout style="height: 100%;">
         <Layout>
-            <Header>
+            <Header style="position: fixed; width: 100%;z-index:1000">
                 <Menu mode="horizontal" theme="dark" active-name="1">
                     <div style="float: left;display: flex">
                         <div class="logo" ></div>
@@ -37,61 +37,35 @@
                     </Dropdown>
                 </Menu>
             </Header>
-            <Layout :style="{padding: '0'}">
-                <!--<Breadcrumb :style="{margin: '16px 0'}">
-                    <BreadcrumbItem>Home</BreadcrumbItem>
-                    <BreadcrumbItem>Components</BreadcrumbItem>
-                    <BreadcrumbItem>Layout</BreadcrumbItem>
-                </Breadcrumb>-->
-                <Content :style="{padding: '0 0',  background: '#fff',height:'100%'}">
-                    <Layout>
-                        <Sider hide-trigger :style="{background: '#fff'}">
-                            <Menu  active-name="1-2" theme="light" width="auto"  :accordion="isAccordion" :active-name="menuName" @on-select="apiContent">
-                                <Submenu v-for="menu in menuList" :name="menu.sort_name"  >
-                                    <template slot="title">
-                                        <Icon type="ios-navigate"></Icon>
-                                        <span>{{menu.sort_name}}</span>
-                                    </template>
-                                    <MenuItem v-for="child in menuChildList" :name="child.api_id" v-if="menu.sort_id == child.sort_id" >
-                                        <span >{{child.api_name}}</span>
-                                    </MenuItem>
+            <Layout>
+                <Sider hide-trigger :style="{background: '#fff',margin: '64px'}">
+                    <Menu  active-name="1-2" theme="light" width="auto"  :accordion="isAccordion" :active-name="menuName" @on-select="apiContent">
+                        <Submenu v-for="menu in menuList" :name="menu.sort_name"  >
+                            <template slot="title">
+                                <Icon type="ios-navigate"></Icon>
+                                <span>{{menu.sort_name}}</span>
+                            </template>
+                            <MenuItem v-for="child in menuChildList" :name="child.api_id" v-if="menu.sort_id == child.sort_id" >
+                                <span >{{child.api_name}}</span>
+                            </MenuItem>
 
-                                </Submenu>
-                            </Menu>
-                        </Sider>
+                        </Submenu>
+                    </Menu>
+                </Sider>
 
-                        <div class="outer" >
-                            <Content class="content" ref="cont">
-                                <keep-alive>
-                                    <router-view :key="$route.fullPath"></router-view>
-                                </keep-alive>
-                            </Content>
-                        </div>
+                <Card :style="{margin: '88px 20px 0',padding: '10px', background: '#fff', minHeight: '500px',width: '100%'}">
+                    <Content >
+                        <keep-alive>
+                            <router-view :key="$route.fullPath"></router-view>
+                        </keep-alive>
+                    </Content>
+                </Card>
 
 
-                    </Layout>
-                </Content>
             </Layout>
-            <!--<Footer class="layout-footer-center">2011-2016 &copy; ApiDoc</Footer>-->
+            <Footer class="layout-footer-center">2011-2016 &copy; TalkingData</Footer>
         </Layout>
-
-
-        <Modal
-                v-model="edit_modal"
-                title="编辑分类"
-                :loading="loading"
-                @on-ok="closeEdit">
-            <Form :model="formItem" :label-width="80">
-                <div style="margin: 5px">
-                    <FormItem label="分类名称">
-                        <Input v-model="formItem.sort_name" placeholder="请输入分类名称..."></Input>
-                    </FormItem>
-                </div>
-            </Form>
-        </Modal>
-
-
-    </div>
+    </Layout>
 </template>
 <script>
     export default {
@@ -115,7 +89,6 @@
             }
         },
         mounted : function(){
-            this.Height = window.innerHeight - this.$refs['cont'].offsetTop - 160;
             this.sortApiList();
             let user = sessionStorage.getItem("user");
             let juser = JSON.parse(user);
@@ -181,8 +154,10 @@
         }
     }
 </script>
+
 <style scoped>
     .layout{
+        height: 100%;
         border: 1px solid #d7dde4;
         background: #f5f7f9;
         position: relative;
@@ -203,23 +178,4 @@
     .layout-footer-center{
         text-align: center;
     }
-
-    .outer {
-        width: 100%;
-        height:550px;
-        display: table;
-        overflow: hidden;
-    }
-    .content {
-        width: 110%;
-        /*margin-right: -15px;*/
-        height: 550px;
-        margin:0 10px;
-        padding-top:15px;
-        padding-left: 50px;
-        overflow-x: hidden;
-        overflow-y: auto;
-    }
-
-
 </style>

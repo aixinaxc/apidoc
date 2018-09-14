@@ -1,7 +1,7 @@
 <template>
-    <div class="layout">
+    <Layout >
         <Layout >
-            <Header :style="{position: 'fixed', width: '100%'}">
+            <Header style="position: fixed; width: 100%;z-index:1000">
                 <div style="width: 100%;height: 100%;">
                     <div class="logo" style="float:left"></div>
                     <div style="float:right ">
@@ -54,7 +54,7 @@
                 </div>
             </Form>
         </Modal>
-    </div>
+    </Layout>
 
 </template>
 
@@ -79,6 +79,7 @@
             let user = sessionStorage.getItem("user");
             let juser = JSON.parse(user);
             this.userId = juser.UserId;
+
         },
         methods: {
             projectList: function(){
@@ -109,6 +110,7 @@
                 this.edit_modal = true;
             },
             closeEdit: function(){
+                this.formItem.project_id = ''
                 if( this.formItem.project_name == undefined ||  this.formItem.project_name == null ||  this.formItem.project_name == ""){
                     this.$Message.error('项目名称不能为空');
                     return;

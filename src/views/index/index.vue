@@ -1,5 +1,5 @@
 <template>
-    <div class="main">
+    <div id="index">
         <router-view v-if="isRouterAlive"></router-view>
     </div>
 </template>
@@ -28,16 +28,8 @@ export default {
 </script>
 
 <style lang=less>
-html,body {
-    * {
-        margin: 0;
-        padding: 0;
-    }
-    width: 100%;
-    height: 100%;
-    .main {
+    html,body,#index {
         width: 100%;
         height: 100%;
     }
-}
 </style>

@@ -30,7 +30,6 @@ axios.interceptors.request.use(config => {
                 config.data = {};
             }
             config.data.user_id = juser.UserId;
-            config.data.project_id = juser.project_id;
             config.data.token = juser.Token;
             console.log("config.data:");
             console.log(config.data);
