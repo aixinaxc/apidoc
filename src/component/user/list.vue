@@ -8,7 +8,7 @@
         </div>
         <div>
             <Table height="600" :columns="columns1" :data="data2"></Table>
-            <Page :total="100" show-elevator style="float:right;margin: 10px;"/>
+            <Page :total="Total" :page-size="pageSize"  :current="pageNum" @on-change="userList"  show-elevator style="float:right;margin: 10px;"/>
         </div>
 
         <Modal
@@ -151,7 +151,11 @@
                     password: ''
                 },
                 projectList:[],
-                projectChange:[]
+                projectChange:[],
+                pageNum:1,
+                pageSize:10,
+                Total:0
+
             }
         },
         mounted: function(){
@@ -160,9 +164,15 @@
         },
         methods:{
             userList: function(){
-                this.$http.get("/user/list")
+                this.$http.get("/user/list",{
+                    params: {
+                        page_num: this.pageNum,
+                        page_size: this.pageSize
+                    }
+                    })
                     .then(res=>{
-                        this.data2 = res;
+                        this.data2 = res.data;
+                        this.Total = res.total;
                     })
                     .catch(err=>{
                         console.log(err)
@@ -172,7 +182,7 @@
                 this.$http.get("/project/list")
                     .then(res=>{
                         console.log("projectlist");
-                        this.projectList = res;
+                        this.projectList = res.data;
                     })
                     .catch(err=>{
                         console.log(err)

@@ -65,8 +65,8 @@
                         })
                             .then(res=>{
                                 console.log("res:");
-                                console.log(res);
-                                sessionStorage.setItem("user",JSON.stringify(res));
+                                console.log(res.data);
+                                sessionStorage.setItem("user",JSON.stringify(res.data));
                                 this.$router.push({path: '/project'})
                             })
                             .catch(err=>{

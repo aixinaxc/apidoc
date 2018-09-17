@@ -62,7 +62,7 @@
                         }
                     })
                         .then(res=>{
-                            this.api_show_content = res.api_show_content
+                            this.api_show_content = res.data.api_show_content
                         })
                         .catch(err=>{
                             console.log(err)

@@ -39,13 +39,13 @@
             </Header>
             <Layout>
                 <Sider hide-trigger :style="{background: '#fff',margin: '64px'}">
-                    <Menu  active-name="1-2" theme="light" width="auto"  :accordion="isAccordion" :active-name="menuName" @on-select="apiContent">
-                        <Submenu v-for="menu in menuList" :name="menu.sort_name"  >
+                    <Menu ref="side_menu"  theme="light" width="auto" :open-names="openNames" :active-name="activeName" :accordion="isAccordion"  @on-select="apiContent"  @on-open-change="openMenu">
+                        <Submenu v-for="(menu,index) in menuList" :key="index" :name="menu.sort_id"  >
                             <template slot="title">
                                 <Icon type="ios-navigate"></Icon>
                                 <span>{{menu.sort_name}}</span>
                             </template>
-                            <MenuItem v-for="child in menuChildList" :name="child.api_id" v-if="menu.sort_id == child.sort_id" >
+                            <MenuItem v-for="(child,index) in menuChildList" :key="index" :name="child.api_id" v-if="menu.sort_id == child.sort_id" >
                                 <span >{{child.api_name}}</span>
                             </MenuItem>
 
@@ -65,6 +65,20 @@
             </Layout>
             <Footer class="layout-footer-center">2018-2028 &copy; API文档管理系统</Footer>
         </Layout>
+
+        <Modal
+                v-model="edit_modal"
+                title="编辑分类"
+                :loading="loading"
+                @on-ok="closeEdit">
+            <Form :model="formItem" :label-width="80">
+                <div style="margin: 5px">
+                    <FormItem label="分类名称">
+                        <Input v-model="formItem.sort_name" placeholder="请输入分类名称..."></Input>
+                    </FormItem>
+                </div>
+            </Form>
+        </Modal>
     </Layout>
 </template>
 <script>
@@ -82,17 +96,26 @@
                 edit_modal: false,
                 loading: true,
                 formItem: {
+                    project_id:'',
                     sort_id:'',
                     sort_name: ''
                 },
                 Height:0,
+                openNames:[],
+                activeName:'',
             }
+        },
+        watch : {
+
         },
         mounted : function(){
             this.sortApiList();
             let user = sessionStorage.getItem("user");
             let juser = JSON.parse(user);
             this.userId = juser.UserId;
+            this.formItem.project_id = juser.project_id;
+
+
         },
         methods : {
             openEdit: function () {
@@ -120,16 +143,35 @@
                 this.$http.get("/sort/sort_api_list")
                     .then(res=>{
                         console.log(res);
-                        console.log(res.sort);
-                        console.log(res.api);
-                        this.menuList = res.sort;
-                        this.menuChildList = res.api;
+                        console.log(res.data.sort);
+                        console.log(res.data.api);
+                        this.menuList = res.data.sort;
+                        this.menuChildList = res.data.api;
+
+                        let open_names = sessionStorage.getItem('menu_opennames').split("");
+                        let active_name = sessionStorage.getItem('active_name');
+                        if(open_names || active_name) {
+                            this.openNames = open_names || [];
+                            this.activeName = active_name || 0;
+                            this.$nextTick(function() {
+                                this.$refs.side_menu.updateOpened();
+                                this.$refs.side_menu.updateActiveName();
+                            })
+                        }
                     })
                     .catch(err=>{
                         console.log(err)
                     })
             },
+            openMenu:function(id){
+                console.log("openmenu");
+                console.log(id);
+                sessionStorage.setItem('menu_opennames',id);
+            },
             apiContent: function (id) {
+                console.log("apiContent");
+                console.log(id);
+                sessionStorage.setItem('active_name',id);
                 this.$router.push({path:'/home/api/content', query: { api_id: id }})
             },
             apiEdit: function () {

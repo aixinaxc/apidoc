@@ -151,9 +151,9 @@
                         }
                     })
                         .then(res=>{
-                            this.formItem.api_name = res.api_name;
-                            this.formItem.sort_id = res.sort_id;
-                            this.value = res.api_edit_content
+                            this.formItem.api_name = res.data.api_name;
+                            this.formItem.sort_id = res.data.sort_id;
+                            this.value = res.data.api_edit_content
                         })
                         .catch(err=>{
                             console.log(err)
@@ -180,7 +180,7 @@
                     }
                 })
                     .then(res=>{
-                        this.sort_list = res
+                        this.sort_list = res.data
                     })
                     .catch(err=>{
                         console.log(err)

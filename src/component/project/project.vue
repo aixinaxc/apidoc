@@ -25,17 +25,21 @@
                 </div>
             </Header>
             <Content :style="{margin: '88px 20% 0px 20%', background: '#fff', minHeight: '700px'}">
-                <div style="width: 100%;height: 100%;display: flex;flex-wrap: wrap">
-                    <div  v-for="item in projectListArr"  v-on:click="homePage(item.project_id)">
-                        <Card  class="card" >
-                            {{item.project_name}}
-                        </Card>
+                <Row :gutter="16" type="flex" >
+                    <div v-for="item in projectListArr"  v-on:click="homePage(item.project_id)">
+                        <Col span="4" >
+                            <Card  class="card" >
+                                {{item.project_name}}
+                            </Card>
+                        </Col>
                     </div>
-                    <div class="card" @click="openEdit">
-                        <Card   class="project_add">
-                        </Card>
+                    <div  class="card" @click="openEdit">
+                        <Col span="4" >
+                            <Card   class="project_add">
+                            </Card>
+                        </Col>
                     </div>
-                </div>
+                </Row>
             </Content>
             <Footer class="layout-footer-center"></Footer>
         </Layout>
@@ -91,7 +95,7 @@
                     }
                 })
                     .then(res=>{
-                        this.projectListArr = res;
+                        this.projectListArr = res.data;
                         console.log(this.projectListArr);
                     })
                     .catch(err=>{
@@ -149,19 +153,12 @@
     .card {
         width: 180px;
         height: 180px;
-        margin: 10px;
+        margin-bottom: 10px;
         text-align: center;
         position:relative;
         vertical-align: middle;
         display:inline-block;
         line-height:150px;
-    }
-    .layout{
-        border: 1px solid #d7dde4;
-        background: #f5f7f9;
-        position: relative;
-        border-radius: 4px;
-        overflow: hidden;
     }
     .layout-footer-center{
         text-align: center;

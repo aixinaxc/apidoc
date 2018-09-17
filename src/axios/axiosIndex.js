@@ -2,7 +2,7 @@ import axios from 'axios'
 import qs from 'qs'
 import { Message } from 'iview'
 import { router } from '../router/index';
-axios.defaults.baseURL = 'http://192.168.2.223:9001';
+axios.defaults.baseURL = '';
 axios.defaults.withCredentials = false;
 axios.defaults.timeout = 100000;
 
@@ -44,7 +44,7 @@ axios.interceptors.response.use(response => {
     console.log(response.data);
     // 在这里你可以判断后台返回数据携带的请求码
     if (response.data.code === 200 || response.data.code === '200') {
-        return response.data.data
+        return response.data
     } else if(response.data.code === 402 || response.data.code === '402'){
         router.push({path: '/'});
         return Promise.reject(response.data.msg);
