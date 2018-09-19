@@ -211,7 +211,7 @@
                     api_show_content: this.api_show_content
                 })
                     .then(res=>{
-                        this.$router.push({path:'/home/api/content', query: { api_id: res }})
+                        this.$router.push({path:'/home/api/content', query: { api_id: res.data }})
                         this.reload();
                     })
                     .catch(err=>{

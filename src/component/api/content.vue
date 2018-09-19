@@ -23,6 +23,7 @@
 
 <script>
     export default {
+        inject:["reload"],
         data() {
             return {
                 api_show_content:"",
@@ -46,7 +47,11 @@
                     }
                 })
                     .then(res=>{
-                        this.$router.push({path:'/home/api/content'})
+                        this.$router.push({path:'/home'})
+                        this.delete_modal = false;
+                        sessionStorage.setItem('menu_opennames',"");
+                        sessionStorage.setItem('active_name',"");
+                        this.reload();
                     })
                     .catch(err=>{
                         console.log(err)

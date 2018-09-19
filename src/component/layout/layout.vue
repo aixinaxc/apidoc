@@ -38,7 +38,7 @@
                 </Menu>
             </Header>
             <Layout>
-                <Sider hide-trigger :style="{background: '#fff',margin: '64px'}">
+                <Sider hide-trigger style="background: #fff;margin: 88px;height: 100%;">
                     <Menu ref="side_menu"  theme="light" width="auto" :open-names="openNames" :active-name="activeName" :accordion="isAccordion"  @on-select="apiContent"  @on-open-change="openMenu">
                         <Submenu v-for="(menu,index) in menuList" :key="index" :name="menu.sort_id"  >
                             <template slot="title">
