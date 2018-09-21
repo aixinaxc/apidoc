@@ -1,6 +1,5 @@
 <template>
     <div style="height: 100%;width: 100%">
-
         <Header style="position: fixed; width: 100%;z-index:1000">
             <Menu mode="horizontal" theme="dark" active-name="1">
                 <div style="float: left;display: flex">
@@ -38,9 +37,10 @@
             </Menu>
         </Header>
 
-        <Layout  >
-            <Sider hide-trigger style="margin-top: 88px;background: white;margin-left: 50px">
-                <Menu ref="side_menu"  theme="light" width="auto" :open-names="openNames" :active-name="activeName" :accordion="isAccordion"  @on-select="apiContent"  @on-open-change="openMenu">
+        <Layout style="min-height: 100vh">
+            <Sider hide-trigger style="margin-top: 88px;background: white;">
+
+                <Menu ref="side_menu"  theme="light" width="auto" :open-names="openNames" :active-name="activeName" :accordion="isAccordion"  @on-select="apiContent"  @on-open-change="openMenu" style="position: static;">
                     <Submenu v-for="(menu,index) in menuList" :key="index" :name="menu.sort_id"  >
                         <template slot="title">
                             <Icon type="ios-navigate"></Icon>
@@ -49,18 +49,19 @@
                         <MenuItem v-for="(child,index) in menuChildList" :key="index" :name="child.api_id" v-if="menu.sort_id == child.sort_id" >
                             <span >{{child.api_name}}</span>
                         </MenuItem>
-
                     </Submenu>
                 </Menu>
+
             </Sider>
-            <Content >
-                <Card :style="{margin: '88px 20px 0',padding: '10px', background: '#fff', minHeight: '500px',width: '90%'}">
-                    <keep-alive>
-                        <router-view :key="$route.fullPath"></router-view>
-                    </keep-alive>
-                </Card>
+            <Content style="margin-top:88px;background: #fff;padding: 1% 5%">
+                <keep-alive>
+                    <router-view :key="$route.fullPath"></router-view>
+                </keep-alive>
             </Content>
+
         </Layout>
+
+
 
 
 
@@ -215,6 +216,22 @@
     .layout-nav{
         width: 420px;
         margin: 0 20px 0 0;
+    }
+
+    .menu-item span{
+        display: inline-block;
+        overflow: hidden;
+        width: 69px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        vertical-align: bottom;
+        transition: width .2s ease .2s;
+    }
+    .menu-item i{
+        transform: translateX(0px);
+        transition: font-size .2s ease, transform .2s ease;
+        vertical-align: middle;
+        font-size: 16px;
     }
     .layout-footer-center{
         text-align: center;
