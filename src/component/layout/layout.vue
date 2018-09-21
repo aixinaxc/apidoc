@@ -1,70 +1,69 @@
 <template>
-    <Layout style="height: 100%;">
-        <Layout>
-            <Header style="position: fixed; width: 100%;z-index:1000">
-                <Menu mode="horizontal" theme="dark" active-name="1">
-                    <div style="float: left;display: flex">
-                        <div class="logo" ></div>
-                        <div class="layout-nav" >
-                            <MenuItem name="1" >
-                                <Icon type="ios-navigate"></Icon>
-                                <span @click="openEdit"> 新增分类</span>
-                            </MenuItem>
-                            <MenuItem name="2">
-                                <Icon type="ios-keypad"></Icon>
-                                <span @click="apiEdit"> 新增API</span>
-                            </MenuItem>
-                        </div>
+    <div style="height: 100%;width: 100%">
+
+        <Header style="position: fixed; width: 100%;z-index:1000">
+            <Menu mode="horizontal" theme="dark" active-name="1">
+                <div style="float: left;display: flex">
+                    <div class="logo" ></div>
+                    <div class="layout-nav" >
+                        <MenuItem name="1" >
+                            <Icon type="ios-navigate"></Icon>
+                            <span @click="openEdit"> 新增分类</span>
+                        </MenuItem>
+                        <MenuItem name="2">
+                            <Icon type="ios-keypad"></Icon>
+                            <span @click="apiEdit"> 新增API</span>
+                        </MenuItem>
                     </div>
-                    <Dropdown trigger="click"  style="float:right;" >
-                        <a href="javascript:void(0)">
-                            <Avatar style="background-color: #87d068" icon="ios-person" />
-                            <Icon type="md-arrow-dropdown" />
-                        </a>
-                        <DropdownMenu slot="list">
-                            <!--<DropdownItem name="修改密码">修改密码</DropdownItem>-->
-                            <div @click="project">
-                                <DropdownItem name="项目列表" >项目列表</DropdownItem>
-                            </div>
-                            <div @click="useradmin">
-                                <DropdownItem name="用户中心" v-if="this.userId == 1">用户中心</DropdownItem>
-                            </div>
-                            <div @click="logout">
-                                <DropdownItem name="退出系统" >退出系统</DropdownItem>
-                            </div>
+                </div>
+                <Dropdown trigger="click"  style="float:right;" >
+                    <a href="javascript:void(0)">
+                        <Avatar style="background-color: #87d068" icon="ios-person" />
+                        <Icon type="md-arrow-dropdown" />
+                    </a>
+                    <DropdownMenu slot="list">
+                        <!--<DropdownItem name="修改密码">修改密码</DropdownItem>-->
+                        <div @click="project">
+                            <DropdownItem name="项目列表" >项目列表</DropdownItem>
+                        </div>
+                        <div @click="useradmin">
+                            <DropdownItem name="用户中心" v-if="this.userId == 1">用户中心</DropdownItem>
+                        </div>
+                        <div @click="logout">
+                            <DropdownItem name="退出系统" >退出系统</DropdownItem>
+                        </div>
 
-                        </DropdownMenu>
-                    </Dropdown>
+                    </DropdownMenu>
+                </Dropdown>
+            </Menu>
+        </Header>
+
+        <Layout  >
+            <Sider hide-trigger style="margin-top: 88px;background: white;margin-left: 50px">
+                <Menu ref="side_menu"  theme="light" width="auto" :open-names="openNames" :active-name="activeName" :accordion="isAccordion"  @on-select="apiContent"  @on-open-change="openMenu">
+                    <Submenu v-for="(menu,index) in menuList" :key="index" :name="menu.sort_id"  >
+                        <template slot="title">
+                            <Icon type="ios-navigate"></Icon>
+                            <span>{{menu.sort_name}}</span>
+                        </template>
+                        <MenuItem v-for="(child,index) in menuChildList" :key="index" :name="child.api_id" v-if="menu.sort_id == child.sort_id" >
+                            <span >{{child.api_name}}</span>
+                        </MenuItem>
+
+                    </Submenu>
                 </Menu>
-            </Header>
-            <Layout>
-                <Sider hide-trigger style="background: #fff;margin: 88px;height: 100%;">
-                    <Menu ref="side_menu"  theme="light" width="auto" :open-names="openNames" :active-name="activeName" :accordion="isAccordion"  @on-select="apiContent"  @on-open-change="openMenu">
-                        <Submenu v-for="(menu,index) in menuList" :key="index" :name="menu.sort_id"  >
-                            <template slot="title">
-                                <Icon type="ios-navigate"></Icon>
-                                <span>{{menu.sort_name}}</span>
-                            </template>
-                            <MenuItem v-for="(child,index) in menuChildList" :key="index" :name="child.api_id" v-if="menu.sort_id == child.sort_id" >
-                                <span >{{child.api_name}}</span>
-                            </MenuItem>
-
-                        </Submenu>
-                    </Menu>
-                </Sider>
-
-                <Card :style="{margin: '88px 20px 0',padding: '10px', background: '#fff', minHeight: '500px',width: '100%'}">
-                    <Content >
-                        <keep-alive>
-                            <router-view :key="$route.fullPath"></router-view>
-                        </keep-alive>
-                    </Content>
+            </Sider>
+            <Content >
+                <Card :style="{margin: '88px 20px 0',padding: '10px', background: '#fff', minHeight: '500px',width: '90%'}">
+                    <keep-alive>
+                        <router-view :key="$route.fullPath"></router-view>
+                    </keep-alive>
                 </Card>
-
-
-            </Layout>
-            <Footer class="layout-footer-center">2018-2028 &copy; API文档管理系统</Footer>
+            </Content>
         </Layout>
+
+
+
 
         <Modal
                 v-model="edit_modal"
@@ -79,7 +78,7 @@
                 </div>
             </Form>
         </Modal>
-    </Layout>
+    </div>
 </template>
 <script>
     export default {
