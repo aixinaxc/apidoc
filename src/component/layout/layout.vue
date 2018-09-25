@@ -1,5 +1,5 @@
 <template>
-    <div style="height: 100%;width: 100%">
+    <div style="height: 100%;min-width: 800px;overflow: auto ">
         <Header style="position: fixed; width: 100%;z-index:1000">
             <Menu mode="horizontal" theme="dark" active-name="1">
                 <div style="float: left;display: flex">
@@ -44,10 +44,10 @@
                     <Submenu v-for="(menu,index) in menuList" :key="index" :name="menu.sort_id"  >
                         <template slot="title">
                             <Icon type="ios-navigate"></Icon>
-                            <span>{{menu.sort_name}}</span>
+                            <span class="spanStyle">{{menu.sort_name}}</span>
                         </template>
                         <MenuItem v-for="(child,index) in menuChildList" :key="index" :name="child.api_id" v-if="menu.sort_id == child.sort_id" >
-                            <span >{{child.api_name}}</span>
+                            <span class="spanStyle">{{child.api_name}}</span>
                         </MenuItem>
                     </Submenu>
                 </Menu>
@@ -57,6 +57,7 @@
                 <keep-alive>
                     <router-view :key="$route.fullPath"></router-view>
                 </keep-alive>
+
             </Content>
 
         </Layout>
@@ -79,6 +80,7 @@
                 </div>
             </Form>
         </Modal>
+
     </div>
 </template>
 <script>
@@ -110,7 +112,7 @@
         },
         mounted : function(){
             this.sortApiList();
-            let user = sessionStorage.getItem("user");
+            let user = localStorage.getItem("user");
             let juser = JSON.parse(user);
             this.userId = juser.UserId;
             this.formItem.project_id = juser.project_id;
@@ -124,6 +126,9 @@
             closeEdit: function(){
                 if(this.formItem.sort_name == undefined || this.formItem.sort_name == null || this.formItem.sort_name == ""){
                     this.$Message.error('分类名称不能为空');
+                    return;
+                }else if(this.formItem.sort_name.length < 10){
+                    this.$Message.error('分类名称长度不能大于10');
                     return;
                 }
                 this.$http.post("/sort/save",{
@@ -180,7 +185,7 @@
             logout: function () {
                 this.$http.get("/logout")
                     .then(res=>{
-                        sessionStorage.removeItem('user');
+                        localStorage.removeItem('user');
                         this.$router.push({path:'/'})
                     })
                     .catch(err=>{
@@ -236,4 +241,21 @@
     .layout-footer-center{
         text-align: center;
     }
+
+    .spanStyle{
+        white-space: nowrap;  /*强制span不换行*/
+        display: inline-block;  /*将span当做块级元素对待*/
+        overflow: hidden;  /*超出宽度部分隐藏*/
+        text-overflow: ellipsis;  /*超出部分以点号代替*/
+        line-height: 0.9;  /*数字与之前的文字对齐*/
+    }
+
+    .top{
+        padding: 10px;
+        background: rgba(0, 153, 229, .7);
+        color: #fff;
+        text-align: center;
+        border-radius: 2px;
+    }
+
 </style>

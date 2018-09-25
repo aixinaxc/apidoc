@@ -187,7 +187,7 @@
                     })
             },
             apiSave: function () {
-                let user = sessionStorage.getItem("user");
+                let user = localStorage.getItem("user");
                 let juser = JSON.parse(user);
                 if(this.formItem.sort_id == undefined || this.formItem.sort_id == null || this.formItem.sort_id == ""){
                     this.$Message.error('请选择分类');

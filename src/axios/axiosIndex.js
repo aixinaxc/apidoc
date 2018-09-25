@@ -8,7 +8,7 @@ axios.defaults.timeout = 100000;
 
 // // axios拦截器
 axios.interceptors.request.use(config => {
-    let user = sessionStorage.getItem("user");
+    let user = localStorage.getItem("user");
     console.log("user:");
     console.log(user);
     if (user != undefined && user != "undefined" && user != null && user != "null" && user != "") {
@@ -20,7 +20,9 @@ axios.interceptors.request.use(config => {
                 config.params = {};
             }
             config.params.user_id = juser.UserId;
-            config.params.project_id = juser.project_id;
+            if(config.params.project_id == undefined || config.params.project_id == null || config.params.project_id == ""){
+                config.params.project_id = juser.project_id;
+            }
             config.params.token = juser.Token;
 
             console.log("config.params:");
@@ -47,6 +49,7 @@ axios.interceptors.response.use(response => {
         return response.data
     } else if(response.data.code === 402 || response.data.code === '402'){
         router.push({path: '/'});
+        localStorage.removeItem('user');
         return Promise.reject(response.data.msg);
     }else {
         let msg = response.data.code + " " + response.data.msg;

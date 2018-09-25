@@ -26,10 +26,14 @@
             </Header>
             <Content :style="{margin: '88px 20% 0px 20%', background: '#fff', minHeight: '700px'}">
                 <Row :gutter="16" type="flex" >
-                    <div v-for="item in projectListArr"  v-on:click="homePage(item.project_id)">
+                    <div v-for="item in projectListArr"  >
                         <Col span="4" >
                             <Card  class="card" >
                                 {{item.project_name}}
+                                <div class="demo-cover">
+                                    <Icon  type="ios-eye-outline" @click.native="homePage(item.project_id)"></Icon>
+                                    <Icon  type="ios-trash-outline" @click.native="deleteProject(item.project_id)"></Icon>
+                                </div>
                             </Card>
                         </Col>
                     </div>
@@ -58,6 +62,15 @@
                 </div>
             </Form>
         </Modal>
+
+        <Modal
+                v-model="delete_model"
+                title="删除项目"
+                @on-ok="closeDelete"
+        >
+            <p>您确定要删除该项目吗？</p>
+            <p style="color: red">（删除项目后,该项目下所有API将被删除）</p>
+        </Modal>
     </Layout>
 
 </template>
@@ -70,24 +83,26 @@
             return {
                 projectListArr : [],
                 edit_modal: false,
+                delete_model: false,
                 loading: true,
                 formItem: {
                     project_id:'',
                     project_name: ''
                 },
-                userId:''
+                userId:'',
+                delete_project_id: ''
             }
         },
         mounted: function(){
             this.projectList();
-            let user = sessionStorage.getItem("user");
+            let user = localStorage.getItem("user");
             let juser = JSON.parse(user);
             this.userId = juser.UserId;
 
         },
         methods: {
             projectList: function(){
-                let user = sessionStorage.getItem("user");
+                let user = localStorage.getItem("user");
                 let juser = JSON.parse(user);
                 this.$http.get("/project/list",{
                     params: {
@@ -103,12 +118,18 @@
                     })
             },
             homePage: function (id) {
-                let user = sessionStorage.getItem("user");
+                let user = localStorage.getItem("user");
                 var juser = JSON.parse(user);
                 juser.project_id = id;
-                sessionStorage.setItem("user",JSON.stringify(juser));
+                localStorage.setItem("user",JSON.stringify(juser));
                 console.log('/home/api/list');
                 this.$router.push({path:'/home', query: { project_id: id }})
+            },
+            deleteProject: function(id){
+                console.log("project_id:");
+                console.log(id);
+                this.delete_project_id = id;
+                this.delete_model = true
             },
             openEdit: function () {
                 this.edit_modal = true;
@@ -132,10 +153,31 @@
                         console.log(err)
                     });
             },
+            closeDelete: function(){
+                if(this.delete_project_id == undefined || this.delete_project_id==null || this.delete_project_id==""){
+                    this.$Message.error('项目id不能为空');
+                    return;
+                }
+                console.log("closeDelete:");
+                console.log(this.delete_project_id);
+                this.$http.get("/project/delete",{
+                    params: {
+                        project_id: this.delete_project_id
+                    }
+                })
+                    .then(res=>{
+                        this.delete_model = false;
+                        this.$Message.success('删除成功');
+                        this.reload();
+                    })
+                    .catch(err=>{
+                        console.log(err)
+                    });
+            },
             logout: function () {
                 this.$http.get("/logout")
                     .then(res=>{
-                        sessionStorage.removeItem('user');
+                        localStorage.removeItem('user');
                         this.$router.push({path:'/'})
                     })
                     .catch(err=>{
@@ -181,5 +223,24 @@
         line-height:150px;
         background: url("../../assets/img/add_icon.png") no-repeat center ;
         background-size: 30% 30%;
+    }
+
+    .demo-cover{
+        display: none;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(0,0,0,.6);
+    }
+    .card:hover .demo-cover{
+        display: block;
+    }
+    .demo-cover i{
+        color: #fff;
+        font-size: 40px;
+        cursor: pointer;
+        margin: 0 2px;
     }
 </style>

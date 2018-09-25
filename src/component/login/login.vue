@@ -46,10 +46,10 @@
             }
         },
         mounted: function(){
-            /*const user = sessionStorage.getItem("user");
+            const user = localStorage.getItem("user");
             if (user !== undefined && user !== null && user !== "") {
                 this.$router.push({path: '/project'});
-            }*/
+            }
         },
         methods: {
             login: function (name) {
@@ -66,7 +66,7 @@
                             .then(res=>{
                                 console.log("res:");
                                 console.log(res.data);
-                                sessionStorage.setItem("user",JSON.stringify(res.data));
+                                localStorage.setItem("user",JSON.stringify(res.data));
                                 this.$router.push({path: '/project'})
                             })
                             .catch(err=>{
