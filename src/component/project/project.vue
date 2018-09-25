@@ -6,8 +6,9 @@
                     <div class="logo" style="float:left"></div>
                     <div style="float:right ">
                         <Dropdown >
-                            <a href="javascript:void(0)">
-                                <Avatar style="background-color: #87d068" icon="ios-person" />
+                            <a href="javascript:void(0)" style="color: white">
+                                <!--<Avatar style="background-color: #87d068" icon="ios-person" />-->
+                                {{username}}
                                 <Icon type="md-arrow-dropdown" />
                             </a>
                             <DropdownMenu slot="list">
@@ -90,13 +91,15 @@
                     project_name: ''
                 },
                 userId:'',
-                delete_project_id: ''
+                delete_project_id: '',
+                username:''
             }
         },
         mounted: function(){
             this.projectList();
             let user = localStorage.getItem("user");
             let juser = JSON.parse(user);
+            this.username = juser.UserUsername;
             this.userId = juser.UserId;
 
         },

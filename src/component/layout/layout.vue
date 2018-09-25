@@ -1,6 +1,6 @@
 <template>
-    <div style="height: 100%;min-width: 800px;overflow: auto ">
-        <Header style="position: fixed; width: 100%;z-index:1000">
+    <div style="height: 100%;">
+        <Header style="position: fixed; width: 100%;z-index:1000;min-width: 800px;">
             <Menu mode="horizontal" theme="dark" active-name="1">
                 <div style="float: left;display: flex">
                     <div class="logo" ></div>
@@ -17,7 +17,8 @@
                 </div>
                 <Dropdown trigger="click"  style="float:right;" >
                     <a href="javascript:void(0)">
-                        <Avatar style="background-color: #87d068" icon="ios-person" />
+                        <!--<Avatar style="background-color: #87d068" icon="ios-person" />-->
+                        {{username}}
                         <Icon type="md-arrow-dropdown" />
                     </a>
                     <DropdownMenu slot="list">
@@ -100,6 +101,7 @@
                 Height:0,
                 openNames:[],
                 activeName:'',
+                username:''
             }
         },
         watch : {
@@ -109,6 +111,7 @@
             this.sortApiList();
             let user = localStorage.getItem("user");
             let juser = JSON.parse(user);
+            this.username = juser.UserUsername;
             this.userId = juser.UserId;
             this.formItem.project_id = juser.project_id;
 
