@@ -168,7 +168,7 @@
                 console.log(render)
             },
             sortList: function () {
-                let user = sessionStorage.getItem("user");
+                let user = localStorage.getItem("user");
                 let juser = JSON.parse(user);
                 if(juser.project_id == undefined || juser.project_id == null || juser.project_id== ""){
                     this.$Message.error('项目id丢失');
@@ -200,6 +200,9 @@
                     return;
                 }else if(this.api_edit_content == undefined || this.api_edit_content == null || this.api_edit_content == ""){
                     this.$Message.error('API内容不能为空');
+                    return;
+                }else if(this.formItem.api_name.length > 6){
+                    this.$Message.error('不能超过6个字');
                     return;
                 }
                 this.$http.post("/api/save",{

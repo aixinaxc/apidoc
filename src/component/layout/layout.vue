@@ -43,8 +43,8 @@
                 <Menu ref="side_menu"  theme="light" width="auto" :open-names="openNames" :active-name="activeName" :accordion="isAccordion"  @on-select="apiContent"  @on-open-change="openMenu" style="position: static;">
                     <Submenu v-for="(menu,index) in menuList" :key="index" :name="menu.sort_id"  >
                         <template slot="title">
-                            <Icon type="ios-navigate"></Icon>
-                            <span class="spanStyle">{{menu.sort_name}}</span>
+
+                            <span class="spanStyle"><Icon type="ios-navigate"></Icon>{{menu.sort_name}}</span>
                         </template>
                         <MenuItem v-for="(child,index) in menuChildList" :key="index" :name="child.api_id" v-if="menu.sort_id == child.sort_id" >
                             <span class="spanStyle">{{child.api_name}}</span>
@@ -61,11 +61,6 @@
             </Content>
 
         </Layout>
-
-
-
-
-
 
         <Modal
                 v-model="edit_modal"
@@ -125,10 +120,12 @@
             },
             closeEdit: function(){
                 if(this.formItem.sort_name == undefined || this.formItem.sort_name == null || this.formItem.sort_name == ""){
+                    this.edit_modal = false;
                     this.$Message.error('分类名称不能为空');
                     return;
-                }else if(this.formItem.sort_name.length < 10){
-                    this.$Message.error('分类名称长度不能大于10');
+                }else if(this.formItem.sort_name.length > 6){
+                    this.edit_modal = false;
+                    this.$Message.error('不能超过6个字');
                     return;
                 }
                 this.$http.post("/sort/save",{
@@ -243,19 +240,14 @@
     }
 
     .spanStyle{
-        white-space: nowrap;  /*强制span不换行*/
-        display: inline-block;  /*将span当做块级元素对待*/
-        overflow: hidden;  /*超出宽度部分隐藏*/
-        text-overflow: ellipsis;  /*超出部分以点号代替*/
-        line-height: 0.9;  /*数字与之前的文字对齐*/
+        display:inline-block;/*内联对象需加*/
+        width:120px;
+        word-break:keep-all;/* 不换行 */
+        white-space:nowrap;/* 不换行 */
+        overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
+        text-overflow:ellipsis;/* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用。*/
     }
 
-    .top{
-        padding: 10px;
-        background: rgba(0, 153, 229, .7);
-        color: #fff;
-        text-align: center;
-        border-radius: 2px;
-    }
+
 
 </style>

@@ -137,7 +137,12 @@
             closeEdit: function(){
                 this.formItem.project_id = ''
                 if( this.formItem.project_name == undefined ||  this.formItem.project_name == null ||  this.formItem.project_name == ""){
+                    this.edit_modal = false;
                     this.$Message.error('项目名称不能为空');
+                    return;
+                }else if(this.formItem.project_name.length > 15){
+                    this.edit_modal = false;
+                    this.$Message.error('不能超过15个字');
                     return;
                 }
                 this.$http.post("/project/save",{
