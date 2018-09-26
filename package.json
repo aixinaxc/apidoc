@@ -22,6 +22,7 @@
     "mini-css-extract-plugin": "^0.4.2",
     "mockjs": "^1.0.1-beta3",
     "qs": "^6.5.2",
+    "reconnecting-websocket": "^4.0.0-rc5",
     "vm-markdown": "^0.2.8",
     "vue": "^2.5.16",
     "vue-router": "^3.0.1",

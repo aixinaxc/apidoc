@@ -16,7 +16,7 @@
                     </div>
                 </div>
                 <Dropdown trigger="click"  style="float:right;" >
-                    <a href="javascript:void(0)">
+                    <a href="javascript:void(0)" style="color: white">
                         <!--<Avatar style="background-color: #87d068" icon="ios-person" />-->
                         {{username}}
                         <Icon type="md-arrow-dropdown" />

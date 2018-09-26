@@ -25,7 +25,7 @@
                     </div>
                 </div>
             </Header>
-            <Content :style="{margin: '88px 20% 0px 20%', background: '#fff', minHeight: '700px'}">
+            <Content :style="{margin: '88px 20% 0px 20%',  minHeight: '700px'}">
                 <Row :gutter="16" type="flex" >
                     <div v-for="item in projectListArr"  >
                         <Col span="4" >
@@ -101,7 +101,6 @@
             let juser = JSON.parse(user);
             this.username = juser.UserUsername;
             this.userId = juser.UserId;
-
         },
         methods: {
             projectList: function(){
@@ -138,7 +137,7 @@
                 this.edit_modal = true;
             },
             closeEdit: function(){
-                this.formItem.project_id = ''
+                this.formItem.project_id = '';
                 if( this.formItem.project_name == undefined ||  this.formItem.project_name == null ||  this.formItem.project_name == ""){
                     this.edit_modal = false;
                     this.$Message.error('项目名称不能为空');
