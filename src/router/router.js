@@ -7,6 +7,8 @@ import ApiContent from '../component/api/content.vue';
 import ApiEdit from '../component/api/edit.vue';
 import Home from '../component/home/home.vue';
 import UserList from '../component/user/list.vue';
+import ImList from '../component/im/list.vue';
+
 export const pageLogin = {
     path: '/',
     name: 'Login',
@@ -27,6 +29,12 @@ export const pageProject = {
     name: 'project',
     component: Project
 };
+export const pageIm = {
+    path: '/im',
+    name: 'im',
+    component: ImList
+};
+
 export const pageHome = {
     path: '/home',
     name: 'home',
@@ -51,5 +59,5 @@ export const pageHome = {
     ]
 };
 export const routers = [
-    pageLogin,pageTest,pageMain,pageProject,pageHome
+    pageLogin,pageTest,pageMain,pageProject,pageHome,pageIm
 ];
