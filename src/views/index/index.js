@@ -4,8 +4,11 @@ import index from './index.vue';
 import { router } from '../../router/index';
 import store from '../../store/store';
 import 'iview/dist/styles/iview.css';
-import axios from '../../axios/axiosIndex'
+import axios from '../../axios/axiosIndex';
 
+import preview from 'vue-photo-preview';
+import 'vue-photo-preview/dist/skin.css';
+Vue.use(preview);
 Vue.use(iView);
 
 Vue.prototype.$http = axios;

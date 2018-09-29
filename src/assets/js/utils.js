@@ -13,9 +13,9 @@ const uuid = function () {
 }
 
 const time10 = function () {
-    let newDate = new Date();
-    newDate.setTime(t * 1000);
-    return newDate.toLocaleString();
+    let timestamp = Date.parse(new Date());
+    timestamp = timestamp / 1000;
+    return timestamp;
 }
 
 export default {
