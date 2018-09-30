@@ -101,6 +101,9 @@
                 this.to_user = val;
                 localStorage.setItem("msg",JSON.stringify(this.msg_list));
                 this.msg_list = [];
+                this.$nextTick(function () {
+                    this.msgList();
+                })
             }
         },
         methods:{
@@ -119,7 +122,6 @@
                    if(msgData.msg_type == 'client'){
 
                    }else if(msgData.msg_type != 'p2p'){
-
                        if((this.to_user.user_id == msg.to_user_id &&this.from_user.user_id == msg.msg_from_id) ||
                            (this.to_user.user_id == msg.msg_from_id &&this.from_user.user_id == msg.to_user_id) ){
                            this.msg_list.push(msgData);
@@ -128,6 +130,24 @@
                        this.msg_list.push(msgData);
                    }
                 });
+            },
+            msgList: function(){
+                this.$http.get("/msg_list",{
+                    params: {
+                        msg_from_id:  this.from_user.user_id,
+                        msg_to_id: this.to_user.user_id,
+                        start_time:0,
+                        end_time:0,
+                        total:0,
+                    }
+                })
+                    .then(res=>{
+                        console.log(res.data);
+                        this.msg_list = res.data;
+                    })
+                    .catch(err=>{
+                        console.log(err)
+                    })
             },
             sendTxt: function(){
                 this.msgSend('p2p',this.to_user.user_id,'im_text',this.msgTextContent(this.im_text));
