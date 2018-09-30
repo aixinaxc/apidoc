@@ -1,19 +1,21 @@
 <template>
     <div>
-        我是im
+       <!-- 我是im
         <Button @click="openImMedal">打开</Button>
         接收人：
         <Select v-model="to_user_id" style="z-index: 1002;width: 200px">
             <Option v-for="user in user_list" :value="user.user_id" >{{user.user_username}}</Option>
-        </Select>
+        </Select>-->
+
+
         <Modal v-model="im_modal" draggable scrollable title="聊天" >
             <p slot="header" style="text-align:center">
-                <span>聊天</span>
+                <span>{{to_user.user_username}}</span>
             </p>
-            <div ref="imContent" style="text-align:center;height: 270px;overflow-y: auto;margin-bottom: 10px">
+            <div ref="imContent" style="text-align:center;height: 270px;overflow-y: auto;margin-bottom: 10px" >
                 <!-- Left -->
                 <div v-for="(msg,index) in msg_list">
-                    <div class="sender" v-if="msg.msg_from_id !== user.UserId">
+                    <div class="sender" v-if="msg.msg_from_id !== from_user.user_id">
                         <div>
                             <Icon type="md-boat" size="36"/>
                         </div>
@@ -71,6 +73,7 @@
     export default {
         name: "list",
         inject:["reload"],
+        props:['im_from_user','im_to_user','is_open'],
         data() {
             return {
                 baseImgUrl:'http://192.168.2.223:9001/img/',
@@ -79,25 +82,30 @@
                 im_text: '',
                 im_modal:false,
                 rws:'',
-                user: JSON.parse(localStorage.getItem("user")),
-                to_user_id:'',
-                user_list:[]
+                from_user: this.im_from_user,
+                to_user:this.im_to_user,
             }
         },
         mounted: function(){
-                this.userList();
+            this.WS();
         },
         watch:{
-          msg_list: function () {
-              this.$nextTick(() => {
-                  this.$refs.imContent.scrollTop = this.$refs.imContent.scrollHeight
-              })
-          }
+            msg_list: function () {
+                this.$nextTick(() => {
+                    this.$refs.imContent.scrollTop = this.$refs.imContent.scrollHeight
+                })
+            },
+            im_to_user: function (val) {
+                console.log("im_to");
+                console.log(val.user_id);
+                this.to_user = val;
+                localStorage.setItem("msg",JSON.stringify(this.msg_list));
+                this.msg_list = [];
+            }
         },
         methods:{
             openImMedal: function(){
                 this.im_modal = true;
-                this.WS();
             },
             WS:function(){
                 this.rws = new ReconnectingWebSocket(this.wsUrl);
@@ -108,13 +116,21 @@
                 this.rws.addEventListener('message', (msg) => {
                    console.log(msg.data);
                    let msgData = JSON.parse(msg.data);
-                   if(msgData.msg_type != 'client'){
+                   if(msgData.msg_type == 'client'){
+
+                   }else if(msgData.msg_type != 'p2p'){
+
+                       if((this.to_user.user_id == msg.to_user_id &&this.from_user.user_id == msg.msg_from_id) ||
+                           (this.to_user.user_id == msg.msg_from_id &&this.from_user.user_id == msg.to_user_id) ){
+                           this.msg_list.push(msgData);
+                       }
+                   }else {
                        this.msg_list.push(msgData);
                    }
                 });
             },
             sendTxt: function(){
-                this.msgSend('p2p',this.to_user_id,'im_text',this.msgTextContent(this.im_text));
+                this.msgSend('p2p',this.to_user.user_id,'im_text',this.msgTextContent(this.im_text));
                 this.im_text = '';
             },
             openImgFile: function(){
@@ -151,7 +167,7 @@
                     console.log(binaryString);
                     let arr = [].slice.call(x);
                     console.log(arr);
-                    _this.msgSend('p2p',_this.to_user_id,'im_img',_this.msgImgContent(filename,file.length,arr));
+                    _this.msgSend('p2p',_this.to_user.user_id,'im_img',_this.msgImgContent(filename,file.length,arr));
                 }
             },
             msgSend: function (msgType,toUserId,msgContentType,msgContent) {
@@ -160,7 +176,7 @@
                 let msg = {};
                 msg.msg_id = utils.uuid();
                 msg.msg_type = msgType;
-                msg.msg_from_id = this.user.UserId;
+                msg.msg_from_id = this.from_user.user_id;
                 msg.msg_from_content = this.userContent('','','');
                 msg.created_at = utils.time10();
                 msg.msg_to_id = toUserId;
@@ -187,22 +203,7 @@
                 msgContent.file_size = fileSize;
                 msgContent.file = file;
                 return msgContent;
-            },
-            userList: function(){
-                this.$http.get("/user/list",{
-                    params: {
-                        page_num: this.pageNum,
-                        page_size: this.pageSize
-                    }
-                })
-                    .then(res=>{
-                        this.user_list = res.data
-                    })
-                    .catch(err=>{
-                        console.log(err)
-                    });
-            },
-
+            }
         }
     }
 </script>
@@ -216,7 +217,7 @@
         background-color: aquamarine;
         float: left;
         margin: 0 20px 10px 15px;
-        padding: 10px 10px 10px 0px;
+        padding: 10px 10px 10px 0;
         border-radius:7px;
     }
     .receiver div:first-child img,
@@ -253,6 +254,8 @@
         border-left-color: gold;
         position: relative;
         right:-16px;
-        top:3px;        }
+        top:3px;
+    }
+
 
 </style>
