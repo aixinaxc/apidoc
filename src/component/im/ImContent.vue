@@ -1,23 +1,16 @@
 <template>
     <div>
-       <!-- 我是im
-        <Button @click="openImMedal">打开</Button>
-        接收人：
-        <Select v-model="to_user_id" style="z-index: 1002;width: 200px">
-            <Option v-for="user in user_list" :value="user.user_id" >{{user.user_username}}</Option>
-        </Select>-->
-
-
         <Modal v-model="im_modal" draggable scrollable title="聊天" >
             <p slot="header" style="text-align:center">
-                <span>{{to_user.user_username}}</span>
+                <span>{{to_name}}</span>
             </p>
             <div ref="imContent" style="text-align:center;height: 270px;overflow-y: auto;margin-bottom: 10px" >
                 <!-- Left -->
                 <div v-for="(msg,index) in msg_list">
                     <div class="sender" v-if="msg.msg_from_id !== from_user.user_id">
                         <div>
-                            <Icon type="md-boat" size="36"/>
+                            <Avatar v-if="msg.msg_from_content.icon == '' || msg.msg_from_content.icon == undefined" icon="ios-person" />
+                            <Avatar v-else :src="touser.user_icon" />
                         </div>
                         <div style="max-width: 260px;text-align: left;word-break:break-all; ">
                             <div class="left_triangle"></div>
@@ -32,7 +25,8 @@
                     <!-- Right -->
                     <div class="receiver" v-else>
                         <div>
-                            <Icon type="md-boat" size="36"/>
+                            <Avatar v-if="msg.msg_to_content.icon == '' || msg.msg_to_content.icon == undefined" icon="ios-person" />
+                            <Avatar v-else :src="touser.user_icon" />
                         </div>
                         <div style="max-width: 260px;text-align: left;word-break:break-all;">
                             <div class="right_triangle"></div>
@@ -56,12 +50,10 @@
                     <textarea style="border: white 0 solid ;height: 80px;width: 100%;" autofocus="autofocus" v-model="im_text"></textarea>
                 </div>
                 <div style="margin-top: 5px">
-                    <Button>关闭</Button>
+                    <Button @click="closeMedal">关闭</Button>
                     <Button type="primary" @click="sendTxt" >发送</Button>
                 </div>
-
             </div>
-
         </Modal>
     </div>
 </template>
@@ -73,23 +65,36 @@
     export default {
         name: "list",
         inject:["reload"],
-        props:['im_from_user','im_to_user','is_open'],
+        props:['im_from_user','im_to_user','is_open','im_base_img_path','im_ws_url','im_msg_type','im_msg_list'],
         data() {
             return {
-                baseImgUrl:'http://192.168.2.223:9001/img/',
-                wsUrl: 'ws://192.168.2.223:9001/ws',
-                msg_list:[],
+                baseImgUrl: this.im_base_img_path,
+                wsUrl: this.im_ws_url,
+                msg_list:this.im_msg_list,
                 im_text: '',
                 im_modal:false,
                 rws:'',
                 from_user: this.im_from_user,
                 to_user:this.im_to_user,
+                msg_type:this.im_msg_type,
+                to_id:'',
+                to_name:''
             }
         },
         mounted: function(){
+            if(this.msg_type == 'p2p'){
+                this.to_id = this.to_user.user_id;
+                this.to_name =  this.to_user.user_username;
+            }else if(this.msg_type == 'group'){
+                this.to_id = this.to_user.group_id;
+                this.to_name =  this.to_user.group_name;
+            }
             this.WS();
         },
         watch:{
+            im_msg_list:function(val){
+                this.msg_list = val;
+            },
             msg_list: function () {
                 this.$nextTick(() => {
                     this.$refs.imContent.scrollTop = this.$refs.imContent.scrollHeight
@@ -97,60 +102,65 @@
             },
             im_to_user: function (val) {
                 console.log("im_to");
-                console.log(val.user_id);
                 this.to_user = val;
-                localStorage.setItem("msg",JSON.stringify(this.msg_list));
-                this.msg_list = [];
-                this.$nextTick(function () {
-                    this.msgList();
-                })
+            },
+            im_base_img_path:function(val){
+                this.baseImgUrl = val;
+            },
+            im_ws_url:function(val){
+                this.wsUrl = val;
+
+            },
+            im_msg_type:function (val) {
+                this.msg_type = val;
+                if(this.msg_type == 'p2p'){
+                    this.to_id = this.to_user.user_id;
+                    this.to_name =  this.to_user.user_username;
+                }else if(this.msg_type == 'group'){
+                    this.to_id = this.to_user.group_id;
+                    this.to_name =  this.to_user.group_name;
+                }
             }
         },
         methods:{
             openImMedal: function(){
                 this.im_modal = true;
             },
+            closeMedal: function(){
+                this.im_modal = false;
+            },
             WS:function(){
                 this.rws = new ReconnectingWebSocket(this.wsUrl);
                 this.rws.addEventListener('open', () => {
-                    this.msgSend('client','','im_text',this.msgTextContent('大家好'));
+                    this.msgSend('client','','im_text',this.msgTextContent('连接'));
                     console.log('连接')
                 });
                 this.rws.addEventListener('message', (msg) => {
                    console.log(msg.data);
                    let msgData = JSON.parse(msg.data);
+                    console.log(msgData);
                    if(msgData.msg_type == 'client'){
 
-                   }else if(msgData.msg_type != 'p2p'){
-                       if((this.to_user.user_id == msg.to_user_id &&this.from_user.user_id == msg.msg_from_id) ||
-                           (this.to_user.user_id == msg.msg_from_id &&this.from_user.user_id == msg.to_user_id) ){
+                   }else if(msgData.msg_type == 'p2p'){
+                       if((this.to_id == msgData.msg_to_id && this.from_user.user_id == msgData.msg_from_id) ||
+                           (this.to_id == msgData.msg_from_id && this.from_user.user_id == msgData.msg_to_id) ){
                            this.msg_list.push(msgData);
                        }
-                   }else {
-                       this.msg_list.push(msgData);
+                   }else if(msgData.msg_type == 'group'){
+                        if(this.to_id == msgData.msg_to_id){
+                            this.msg_list.push(msgData);
+                        }
                    }
                 });
             },
-            msgList: function(){
-                this.$http.get("/msg_list",{
-                    params: {
-                        msg_from_id:  this.from_user.user_id,
-                        msg_to_id: this.to_user.user_id,
-                        start_time:0,
-                        end_time:0,
-                        total:0,
-                    }
-                })
-                    .then(res=>{
-                        console.log(res.data);
-                        this.msg_list = res.data;
-                    })
-                    .catch(err=>{
-                        console.log(err)
-                    })
-            },
             sendTxt: function(){
-                this.msgSend('p2p',this.to_user.user_id,'im_text',this.msgTextContent(this.im_text));
+                console.log(this.msg_type);
+                console.log(this.to_id);
+                if(this.msg_type == 'p2p'){
+                    this.msgSend('p2p',this.to_id,'im_text',this.msgTextContent(this.im_text));
+                }else if(this.msg_type == 'group'){
+                    this.msgSend('group',this.to_id,'im_text',this.msgTextContent(this.im_text));
+                }
                 this.im_text = '';
             },
             openImgFile: function(){
@@ -171,7 +181,6 @@
                     this.$Message.error('文件格式不支持');
                     return;
                 }
-
                 browserMD5File(file, function (err, md5) {
                     filename = md5 + '.' + fileType;
                     console.log(md5); // 97027eb624f85892c69c4bcec8ab0f11
@@ -187,7 +196,11 @@
                     console.log(binaryString);
                     let arr = [].slice.call(x);
                     console.log(arr);
-                    _this.msgSend('p2p',_this.to_user.user_id,'im_img',_this.msgImgContent(filename,file.length,arr));
+                    if(this.msg_type == 'p2p'){
+                        _this.msgSend('p2p',_this.to_id,'im_img',_this.msgImgContent(filename,file.length,arr));
+                    }else if(this.msg_type == 'group'){
+                        _this.msgSend('group',_this.to_id,'im_img',_this.msgImgContent(filename,file.length,arr));
+                    }
                 }
             },
             msgSend: function (msgType,toUserId,msgContentType,msgContent) {
@@ -276,6 +289,4 @@
         right:-16px;
         top:3px;
     }
-
-
 </style>
