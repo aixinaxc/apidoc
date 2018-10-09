@@ -45,9 +45,12 @@
                     <Icon type="ios-happy-outline" size="20"/>
                     <input type="file" ref="img_file" style="display:none" @change="sendImg">
                     <Icon type="ios-image-outline" size="20" @click="openImgFile" />
+                    <div style="float: right" @click="openDrawer">
+                        历史消息
+                    </div>
                 </div>
                 <div>
-                    <textarea style="border: white 0 solid ;height: 80px;width: 100%;" autofocus="autofocus" v-model="im_text"></textarea>
+                    <textarea ref="InputText" style="border: white 0 solid ;height: 80px;width: 100%;"  v-focus v-model="im_text"></textarea>
                 </div>
                 <div style="margin-top: 5px">
                     <Button @click="closeMedal">关闭</Button>
@@ -55,6 +58,12 @@
                 </div>
             </div>
         </Modal>
+
+        <Drawer title="历史消息" :closable="false" v-model="show_drawer">
+            <p>Some contents...</p>
+            <p>Some contents...</p>
+            <p>Some contents...</p>
+        </Drawer>
     </div>
 </template>
 
@@ -78,17 +87,17 @@
                 to_user:this.im_to_user,
                 msg_type:this.im_msg_type,
                 to_id:'',
-                to_name:''
+                to_name:'',
+                show_drawer:false
+            }
+        },
+        directives: {
+            focus:function (el) {
+                el.focus();
             }
         },
         mounted: function(){
-            if(this.msg_type == 'p2p'){
-                this.to_id = this.to_user.user_id;
-                this.to_name =  this.to_user.user_username;
-            }else if(this.msg_type == 'group'){
-                this.to_id = this.to_user.group_id;
-                this.to_name =  this.to_user.group_name;
-            }
+
             this.WS();
         },
         watch:{
@@ -103,6 +112,7 @@
             im_to_user: function (val) {
                 console.log("im_to");
                 this.to_user = val;
+                this.setId();
             },
             im_base_img_path:function(val){
                 this.baseImgUrl = val;
@@ -113,13 +123,7 @@
             },
             im_msg_type:function (val) {
                 this.msg_type = val;
-                if(this.msg_type == 'p2p'){
-                    this.to_id = this.to_user.user_id;
-                    this.to_name =  this.to_user.user_username;
-                }else if(this.msg_type == 'group'){
-                    this.to_id = this.to_user.group_id;
-                    this.to_name =  this.to_user.group_name;
-                }
+                this.setId();
             }
         },
         methods:{
@@ -128,6 +132,18 @@
             },
             closeMedal: function(){
                 this.im_modal = false;
+            },
+            openDrawer: function(){
+                this.show_drawer = true;
+            },
+            setId: function(){
+                if(this.msg_type == 'p2p'){
+                    this.to_id = this.to_user.user_id;
+                    this.to_name =  this.to_user.user_username;
+                }else if(this.msg_type == 'group'){
+                    this.to_id = this.to_user.group_id;
+                    this.to_name =  this.to_user.group_name;
+                }
             },
             WS:function(){
                 this.rws = new ReconnectingWebSocket(this.wsUrl);
@@ -196,9 +212,9 @@
                     console.log(binaryString);
                     let arr = [].slice.call(x);
                     console.log(arr);
-                    if(this.msg_type == 'p2p'){
+                    if(_this.msg_type == 'p2p'){
                         _this.msgSend('p2p',_this.to_id,'im_img',_this.msgImgContent(filename,file.length,arr));
-                    }else if(this.msg_type == 'group'){
+                    }else if(_this.msg_type == 'group'){
                         _this.msgSend('group',_this.to_id,'im_img',_this.msgImgContent(filename,file.length,arr));
                     }
                 }
@@ -216,6 +232,7 @@
                 msg.msg_to_content = this.userContent('','','');
                 msg.msg_content_type = msgContentType;
                 msg.msg_content = msgContent;
+                this.msg_list.push(msg);
                 this.rws.send(JSON.stringify(msg));
             },
             userContent:function (id,name,icon) {

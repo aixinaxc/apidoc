@@ -125,6 +125,7 @@
                 this.$refs.ImContent.im_modal = true;
             },
             msgList: function(msgType){
+                this.msg_list = [];
                 if(this.msg_type == 'p2p'){
                     this.to_id = this.to_user.user_id;
                 }else if(this.msg_type == 'group'){
@@ -136,10 +137,10 @@
                         msg_to_id: this.to_id,
                         start_time:0,
                         end_time:0,
-                        total:0,
+                        total:10,
                         msg_type:msgType
                     }
-                })
+                    })
                     .then(res=>{
                         console.log(res.data);
                         this.msg_list = res.data;
@@ -165,7 +166,7 @@
     .listStyle{
         width: 270px;
         height: 450px;
-        z-index: 9999;
+        z-index: 1000;
         position: fixed ! important;
         right: 0;
         bottom: 0;
@@ -199,7 +200,7 @@
         text-align: center;
         font-size: 18px;
         line-height:48px;
-        z-index: 9999;
+        z-index: 1000;
         position: fixed ! important;
         right: 20px;
         bottom: 15px;
