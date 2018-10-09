@@ -14,7 +14,7 @@
                         </div>
                         <div style="max-width: 260px;text-align: left;word-break:break-all; ">
                             <div class="left_triangle"></div>
-                            <span v-if="msg.msg_content_type == 'im_text'">
+                            <span style="font-size: 16px" v-if="msg.msg_content_type == 'im_text'">
                             {{msg.msg_content.text}}
                             </span>
                             <span v-else>
@@ -30,7 +30,7 @@
                         </div>
                         <div style="max-width: 260px;text-align: left;word-break:break-all;">
                             <div class="right_triangle"></div>
-                            <span v-if="msg.msg_content_type == 'im_text'">
+                            <span style="font-size: 16px" v-if="msg.msg_content_type == 'im_text'">
                             {{msg.msg_content.text}}
                             </span>
                             <span v-else>
@@ -41,16 +41,37 @@
                 </div>
             </div>
             <div slot="footer" style="margin: -5px -16px">
-                <div style="width: 100%;height: 20px;text-align:left;margin-bottom: 5px;padding: 0 5px">
-                    <Icon type="ios-happy-outline" size="20"/>
-                    <input type="file" ref="img_file" style="display:none" @change="sendImg">
-                    <Icon type="ios-image-outline" size="20" @click="openImgFile" />
-                    <div style="float: right" @click="openDrawer">
+                <div class="wrapper" >
+                    <!---->
+                    <!--emoji-->
+                    <EmojiPicker @emoji="insert" :search="search">
+                        <div class="emoji-invoker" slot="emoji-invoker" slot-scope="{ events }" v-on="events" style="float: left">
+                            <Icon type="ios-happy-outline" size="24" />
+                        </div>
+                        <div slot="emoji-picker" slot-scope="{ emojis, insert, display }" >
+                            <div class="emoji-picker" >
+                                <!--<div class="emoji-picker__search">
+                                    <input type="text" v-model="search" v-focus>
+                                </div>-->
+                                <div>
+                                    <div v-for="(emojiGroup, category) in emojis" :key="category">
+                                        <h5>{{ category }}</h5>
+                                        <div class="emojis">
+                                            <span v-for="(emoji, emojiName) in emojiGroup" :key="emojiName" @click="insert(emoji)" :title="emojiName">{{ emoji }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </EmojiPicker>
+                    <input type="file" ref="img_file" style="display:none;" @change="sendImg" >
+                    <Icon type="ios-image-outline" size="24" @click="openImgFile" />
+                    <div style="float: right;" @click="openDrawer">
                         历史消息
                     </div>
                 </div>
-                <div>
-                    <textarea ref="InputText" style="border: white 0 solid ;height: 80px;width: 100%;"  v-focus v-model="im_text"></textarea>
+                <div >
+                    <textarea ref="InputText"  style="border: white 0 solid ;height: 80px;width: 100%;font-size: 16px"  v-focus v-model="im_text"></textarea>
                 </div>
                 <div style="margin-top: 5px">
                     <Button @click="closeMedal">关闭</Button>
@@ -64,6 +85,8 @@
             <p>Some contents...</p>
             <p>Some contents...</p>
         </Drawer>
+
+
     </div>
 </template>
 
@@ -71,10 +94,14 @@
     import utils from "../../assets/js/utils"
     import ReconnectingWebSocket from 'reconnecting-websocket';
     const browserMD5File = require('browser-md5-file');
+    import EmojiPicker from 'vue-emoji-picker';
     export default {
         name: "list",
         inject:["reload"],
         props:['im_from_user','im_to_user','is_open','im_base_img_path','im_ws_url','im_msg_type','im_msg_list'],
+        components:{
+            EmojiPicker
+        },
         data() {
             return {
                 baseImgUrl: this.im_base_img_path,
@@ -88,7 +115,8 @@
                 msg_type:this.im_msg_type,
                 to_id:'',
                 to_name:'',
-                show_drawer:false
+                show_drawer:false,
+                search: '',
             }
         },
         directives: {
@@ -135,6 +163,10 @@
             },
             openDrawer: function(){
                 this.show_drawer = true;
+            },
+            insert: function(emoji) {
+                console.log(emoji);
+                this.im_text += emoji
             },
             setId: function(){
                 if(this.msg_type == 'p2p'){
@@ -283,7 +315,7 @@
     }
     .receiver div:nth-of-type(2){
         float:right;
-        background-color: gold;
+        background-color: #dddddd;
         margin: 0 10px 10px 20px;
         padding: 10px 0 10px 10px;
         border-radius:7px;
@@ -301,9 +333,80 @@
         height:0;
         width:0;
         border: 8px solid transparent;
-        border-left-color: gold;
+        border-left-color: #dddddd;
         position: relative;
         right:-16px;
         top:3px;
+    }
+
+    /*emoji样式*/
+    .wrapper {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+        height: 24px;
+        text-align:left;
+        margin-bottom: 5px;
+        padding: 0 5px;
+    }
+    .emoji-invoker {
+        width: 1.5rem;
+        height: 1.5rem;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .emoji-invoker:hover {
+        transform: scale(1.1);
+    }
+    .emoji-picker {
+        position: absolute;
+        top: -10rem;
+        z-index:2;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        width: 25rem;
+        height: 10rem;
+        overflow-y: auto;
+        padding: 1rem;
+        box-sizing: border-box;
+        border-radius: 0.5rem;
+        background: #fff;
+        box-shadow: 1px 1px 8px #c7dbe6;
+    }
+    .emoji-picker__search {
+        display: flex;
+    }
+    .emoji-picker__search > input {
+        flex: 1;
+        border-radius: 10rem;
+        border: 1px solid #ccc;
+        padding: 0.5rem 1rem;
+        outline: none;
+    }
+    .emoji-picker h5 {
+        margin-bottom: 0;
+        color: #b1b1b1;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        cursor: default;
+    }
+    .emoji-picker .emojis {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+    .emoji-picker .emojis:after {
+        content: "";
+        flex: auto;
+    }
+    .emoji-picker .emojis span {
+        padding: 0.2rem;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+    .emoji-picker .emojis span:hover {
+        background: #ececec;
+        cursor: pointer;
     }
 </style>

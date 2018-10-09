@@ -30,7 +30,7 @@
                     <div v-for="item in projectListArr"  >
                         <Col span="4" >
                             <Card  class="card" >
-                                {{item.project_name}}
+                                <div>{{item.project_name}}</div>
                                 <div class="demo-cover">
                                     <Icon  type="ios-eye-outline" @click.native="homePage(item.project_id)"></Icon>
                                     <Icon  type="ios-trash-outline" @click.native="deleteProject(item.project_id)"></Icon>
@@ -38,7 +38,7 @@
                             </Card>
                         </Col>
                     </div>
-                    <div  class="card" @click="openEdit">
+                    <div  @click="openEdit">
                         <Col span="4" >
                             <Card   class="project_add">
                             </Card>
@@ -207,7 +207,7 @@
         position:relative;
         vertical-align: middle;
         display:inline-block;
-        line-height:150px;
+        padding-top: 60px;
     }
     .layout-footer-center{
         text-align: center;
@@ -240,6 +240,7 @@
         left: 0;
         right: 0;
         background: rgba(0,0,0,.6);
+        padding-top: 60px;
     }
     .card:hover .demo-cover{
         display: block;
