@@ -35,7 +35,19 @@ const formatDateTime = function (timeStamp) {
     return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;
 }
 
+const getObjectURL = function (file) {
+    var url = null;
+    if (window.createObjcectURL != undefined) {
+        url = window.createOjcectURL(file);
+    } else if (window.URL != undefined) {
+        url = window.URL.createObjectURL(file);
+    } else if (window.webkitURL != undefined) {
+        url = window.webkitURL.createObjectURL(file);
+    }
+    return url;
+}
+
 
 export default {
-    uuid, time10, formatDateTime
+    uuid, time10, formatDateTime,getObjectURL
 }

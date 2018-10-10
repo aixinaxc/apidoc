@@ -18,7 +18,7 @@
                             {{msg.msg_content.text}}
                             </span>
                             <span v-else>
-                            <img :src="baseImgUrl + msg.msg_content.file_name" style="max-width: 200px;max-height: 150px"  :preview="index"/>
+                            <img :src="imgUrl(msg.msg_content.file_name)" style="max-width: 200px;max-height: 150px"  :preview="index"/>
                             </span>
                         </div>
                     </div>
@@ -34,7 +34,7 @@
                             {{msg.msg_content.text}}
                             </span>
                             <span v-else>
-                            <img :src="baseImgUrl + msg.msg_content.file_name" style="max-width: 200px;max-height: 150px" :preview="index"/>
+                            <img :src="imgUrl(msg.msg_content.file_name)" style="max-width: 200px;max-height: 150px" :preview="index"/>
                             </span>
                         </div>
                     </div>
@@ -91,7 +91,7 @@
                             {{msg.msg_content.text}}
                             </span>
                             <span v-else>
-                            <img :src="baseImgUrl + msg.msg_content.file_name" style="max-width: 200px;max-height: 150px" :preview="index"/>
+                            <img :src="imgUrl(msg.msg_content.file_name)" style="max-width: 200px;max-height: 150px" :preview="index"/>
                             </span>
                         </div>
                     </div>
@@ -144,6 +144,18 @@
         filters: {
             formatDate(time) {
                 return utils.formatDateTime(time);
+            },
+
+        },
+        computed: {
+            imgUrl(){
+                return function(url){
+                    if(url.indexOf("blob") != -1){
+                        return  url;
+                    }else {
+                        return (this.baseImgUrl + url);
+                    }
+                }
             }
         },
         mounted: function(){
@@ -248,6 +260,7 @@
                 let _this = this;
                 let file = this.$refs.img_file.files[0];
                 let filename = '';
+                let imgUrl = utils.getObjectURL(file);
                 if(file == undefined || file == null){
                     return;
                 }
@@ -275,27 +288,26 @@
                     let arr = [].slice.call(x);
                     console.log(arr);
                     if(_this.msg_type == 'p2p'){
-                        _this.msgSend('p2p',_this.to_user.id,'im_img',_this.msgImgContent(filename,file.length,arr));
+                        _this.msgSend('p2p',_this.to_user.id,'im_img',_this.msgImgContent(filename,file.length,arr),imgUrl);
                     }else if(_this.msg_type == 'group'){
-                        _this.msgSend('group',_this.to_user.id,'im_img',_this.msgImgContent(filename,file.length,arr));
+                        _this.msgSend('group',_this.to_user.id,'im_img',_this.msgImgContent(filename,file.length,arr),imgUrl);
                     }
                 }
             },
-            msgSend: function (msgType,toUserId,msgContentType,msgContent) {
-                console.log(utils.uuid());
-                console.log(utils.time10());
+            msgSend: function (msgType,toUserId,msgContentType,msgContent,fileUrl) {
                 let msg = {};
                 msg.msg_id = utils.uuid();
                 msg.msg_type = msgType;
                 msg.msg_from_id = this.from_user.id;
-                msg.msg_from_content = this.userContent('','','');
+                msg.msg_from_content = this.userContent(this.from_user.id,this.from_user.name,this.from_user.icon);
                 msg.created_at = utils.time10();
                 msg.msg_to_id = toUserId;
-                msg.msg_to_content = this.userContent('','','');
+                msg.msg_to_content = this.userContent(this.to_user.id,this.to_user.name,this.to_user.icon);
                 msg.msg_content_type = msgContentType;
                 msg.msg_content = msgContent;
-                this.msg_list.push(msg);
                 this.rws.send(JSON.stringify(msg));
+                msg.msg_content.file_name = fileUrl;
+                this.msg_list.push(msg);
             },
             userContent:function (id,name,icon) {
                 let userContent = {};
