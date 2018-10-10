@@ -46,7 +46,7 @@
                     </TabPane>
                     <TabPane label="记录" style="height: 330px">
 
-                        <div v-for="(h,index) in history_list"  @click="openImContent(h,h.type)"
+                        <div class="show" v-for="(h,index) in history_list"  @click="openImContent(h,h.type)"
                              onmouseover="this.className='showBackground'" onmouseout="this.className='show'">
                             <Avatar v-if="h.icon == '' || h.icon == undefined" icon="ios-person" />
                             <Avatar v-else :src="h.icon" />
@@ -56,7 +56,8 @@
                 </Tabs>
             </div>
             <ImContent ref="ImContent" :im_to_user="to_user" :im_from_user="from_user" :im_base_img_path="base_img_path" :im_ws_url="ws_url"
-                       :im_msg_type="msg_type" :im_msg_list="msg_list" :im_history_msg_list="history_msg_list" :im_history_msg_total="Total" @historyMsgList="historyMsgList"></ImContent>
+                       :im_msg_type="msg_type" :im_msg_list="msg_list" :im_history_msg_list="history_msg_list" :im_history_msg_total="Total"
+                       @historyMsgList="historyMsgList"></ImContent>
         </Card>
     </div>
 

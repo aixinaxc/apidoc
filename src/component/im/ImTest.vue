@@ -102,7 +102,6 @@
                         console.log(err)
                     })
             }
-
         }
     }
 </script>
