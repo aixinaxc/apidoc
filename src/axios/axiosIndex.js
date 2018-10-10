@@ -13,8 +13,6 @@ axios.interceptors.request.use(config => {
     console.log(user);
     if (user != undefined && user != "undefined" && user != null && user != "null" && user != "") {
         let juser = JSON.parse(user);
-        console.log("juser:");
-        console.log(juser);
         if(config.method === "get"){
             if(config.params === undefined){
                 config.params = {};
@@ -24,7 +22,6 @@ axios.interceptors.request.use(config => {
                 config.params.project_id = juser.project_id;
             }
             config.params.token = juser.Token;
-
             console.log("config.params:");
             console.log(config.params);
         }else if(config.method === "post"){

@@ -12,7 +12,7 @@
                 </FormItem>
                 <FormItem label="分类" style="width: 20%">
                     <Select v-model="formItem.sort_id" style="z-index: 1002">
-                        <Option v-for="sort in sort_list" :value="sort.sort_id" >{{sort.sort_name}}</Option>
+                        <Option v-for="(sort,index) in sort_list" :value="sort.sort_id" >{{sort.sort_name}}</Option>
                     </Select>
                 </FormItem>
             </Form>

@@ -2,7 +2,7 @@
     <div>
         <Modal v-model="im_modal" draggable scrollable title="聊天" >
             <p slot="header" style="text-align:center">
-                <span>{{to_name}}</span>
+                <span>{{to_user.name}}</span>
             </p>
             <div ref="imContent" style="text-align:center;height: 270px;overflow-y: auto;margin-bottom: 10px" >
                 <!-- Left -->
@@ -10,7 +10,7 @@
                     <div class="sender" v-if="msg.msg_from_id !== from_user.user_id">
                         <div>
                             <Avatar v-if="msg.msg_from_content.icon == '' || msg.msg_from_content.icon == undefined" icon="ios-person" />
-                            <Avatar v-else :src="touser.user_icon" />
+                            <Avatar v-else :src="msg.msg_from_content.icon" />
                         </div>
                         <div style="max-width: 260px;text-align: left;word-break:break-all; ">
                             <div class="left_triangle"></div>
@@ -26,7 +26,7 @@
                     <div class="receiver" v-else>
                         <div>
                             <Avatar v-if="msg.msg_to_content.icon == '' || msg.msg_to_content.icon == undefined" icon="ios-person" />
-                            <Avatar v-else :src="touser.user_icon" />
+                            <Avatar v-else :src="msg.msg_to_content.icon" />
                         </div>
                         <div style="max-width: 260px;text-align: left;word-break:break-all;">
                             <div class="right_triangle"></div>
@@ -80,10 +80,24 @@
             </div>
         </Modal>
 
-        <Drawer title="历史消息" :closable="false" v-model="show_drawer">
-            <p>Some contents...</p>
-            <p>Some contents...</p>
-            <p>Some contents...</p>
+        <Drawer width="300" title="历史消息" :closable="false" v-model="show_drawer">
+            <div style="height: 95%">
+                <!-- Left -->
+                <div v-for="(msg,index) in history_msg_list">
+                    <div style="padding: 5px 0">
+                        <div>{{msg.msg_from_content.name == '' ? '未知': msg.msg_from_content.name}} - {{msg.created_at | formatDate}}</div>
+                        <div>
+                            <span style="font-size: 16px" v-if="msg.msg_content_type == 'im_text'">
+                            {{msg.msg_content.text}}
+                            </span>
+                            <span v-else>
+                            <img :src="baseImgUrl + msg.msg_content.file_name" style="max-width: 200px;max-height: 150px" :preview="index"/>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <Page :total="Total" :page-size="page_size"  :current="page_num" @on-change="historyMsgList"  />
         </Drawer>
 
 
@@ -98,7 +112,7 @@
     export default {
         name: "list",
         inject:["reload"],
-        props:['im_from_user','im_to_user','is_open','im_base_img_path','im_ws_url','im_msg_type','im_msg_list'],
+        props:['im_from_user','im_to_user','is_open','im_base_img_path','im_ws_url','im_msg_type','im_msg_list','im_history_msg_list','im_history_msg_total'],
         components:{
             EmojiPicker
         },
@@ -107,16 +121,19 @@
                 baseImgUrl: this.im_base_img_path,
                 wsUrl: this.im_ws_url,
                 msg_list:this.im_msg_list,
-                im_text: '',
-                im_modal:false,
-                rws:'',
+                history_msg_list:this.im_history_msg_list,
                 from_user: this.im_from_user,
                 to_user:this.im_to_user,
                 msg_type:this.im_msg_type,
-                to_id:'',
-                to_name:'',
+                im_text: '',
+                im_modal:false,
+                rws:'',
                 show_drawer:false,
                 search: '',
+                page_num:1,
+                page_size:20,
+                Total:this.im_history_msg_total,
+                time:0
             }
         },
         directives: {
@@ -124,13 +141,25 @@
                 el.focus();
             }
         },
+        filters: {
+            formatDate(time) {
+                return utils.formatDateTime(time);
+            }
+        },
         mounted: function(){
-
             this.WS();
         },
         watch:{
             im_msg_list:function(val){
                 this.msg_list = val;
+            },
+            im_history_msg_list: function(val){
+                console.log('im_history_msg_list');
+                console.log(val);
+                this.history_msg_list = val;
+            },
+            im_history_msg_total: function(val){
+                this.Total = val;
             },
             msg_list: function () {
                 this.$nextTick(() => {
@@ -140,7 +169,6 @@
             im_to_user: function (val) {
                 console.log("im_to");
                 this.to_user = val;
-                this.setId();
             },
             im_base_img_path:function(val){
                 this.baseImgUrl = val;
@@ -151,7 +179,6 @@
             },
             im_msg_type:function (val) {
                 this.msg_type = val;
-                this.setId();
             }
         },
         methods:{
@@ -163,19 +190,23 @@
             },
             openDrawer: function(){
                 this.show_drawer = true;
+                this.$emit('historyMsgList',this.dataH());
+            },
+            dataH : function(){
+                let data = {};
+                data.msgType = this.msg_type;
+                data.fromId = this.from_user.user_id;
+                data.toId = this.to_user.id;
+                data.pageNum = this.page_num;
+                data.pageSize = this.page_size;
+                return data;
+            },
+            historyMsgList: function(){
+                this.$emit('historyMsgList',this.dataH());
             },
             insert: function(emoji) {
                 console.log(emoji);
                 this.im_text += emoji
-            },
-            setId: function(){
-                if(this.msg_type == 'p2p'){
-                    this.to_id = this.to_user.user_id;
-                    this.to_name =  this.to_user.user_username;
-                }else if(this.msg_type == 'group'){
-                    this.to_id = this.to_user.group_id;
-                    this.to_name =  this.to_user.group_name;
-                }
             },
             WS:function(){
                 this.rws = new ReconnectingWebSocket(this.wsUrl);
@@ -190,12 +221,12 @@
                    if(msgData.msg_type == 'client'){
 
                    }else if(msgData.msg_type == 'p2p'){
-                       if((this.to_id == msgData.msg_to_id && this.from_user.user_id == msgData.msg_from_id) ||
-                           (this.to_id == msgData.msg_from_id && this.from_user.user_id == msgData.msg_to_id) ){
+                       if((this.to_user.id == msgData.msg_to_id && this.from_user.user_id == msgData.msg_from_id) ||
+                           (this.to_user.id == msgData.msg_from_id && this.from_user.user_id == msgData.msg_to_id) ){
                            this.msg_list.push(msgData);
                        }
                    }else if(msgData.msg_type == 'group'){
-                        if(this.to_id == msgData.msg_to_id){
+                        if(this.to_user.id == msgData.msg_to_id){
                             this.msg_list.push(msgData);
                         }
                    }
@@ -203,11 +234,10 @@
             },
             sendTxt: function(){
                 console.log(this.msg_type);
-                console.log(this.to_id);
                 if(this.msg_type == 'p2p'){
-                    this.msgSend('p2p',this.to_id,'im_text',this.msgTextContent(this.im_text));
+                    this.msgSend('p2p',this.to_user.id,'im_text',this.msgTextContent(this.im_text));
                 }else if(this.msg_type == 'group'){
-                    this.msgSend('group',this.to_id,'im_text',this.msgTextContent(this.im_text));
+                    this.msgSend('group',this.to_user.id,'im_text',this.msgTextContent(this.im_text));
                 }
                 this.im_text = '';
             },
@@ -245,9 +275,9 @@
                     let arr = [].slice.call(x);
                     console.log(arr);
                     if(_this.msg_type == 'p2p'){
-                        _this.msgSend('p2p',_this.to_id,'im_img',_this.msgImgContent(filename,file.length,arr));
+                        _this.msgSend('p2p',_this.to_user.id,'im_img',_this.msgImgContent(filename,file.length,arr));
                     }else if(_this.msg_type == 'group'){
-                        _this.msgSend('group',_this.to_id,'im_img',_this.msgImgContent(filename,file.length,arr));
+                        _this.msgSend('group',_this.to_user.id,'im_img',_this.msgImgContent(filename,file.length,arr));
                     }
                 }
             },

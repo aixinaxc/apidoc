@@ -18,7 +18,7 @@
                 @on-ok="closeProject">
                 <div style="margin: 5px">
                     <CheckboxGroup v-model="projectChange">
-                        <Checkbox v-for="p in projectList" :label="p.project_id">
+                        <Checkbox v-for="(p,index) in projectList" :label="p.project_id">
                             <Icon type="logo-twitter"></Icon>
                             <span>{{p.project_name}}</span>
                         </Checkbox>

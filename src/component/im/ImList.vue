@@ -45,11 +45,18 @@
                         </div>
                     </TabPane>
                     <TabPane label="记录" style="height: 330px">
-                        标签三的内容
+
+                        <div v-for="(h,index) in history_list"  @click="openImContent(h,h.type)"
+                             onmouseover="this.className='showBackground'" onmouseout="this.className='show'">
+                            <Avatar v-if="h.icon == '' || h.icon == undefined" icon="ios-person" />
+                            <Avatar v-else :src="h.icon" />
+                            <span >{{h.name}}</span>
+                        </div>
                     </TabPane>
                 </Tabs>
             </div>
-            <ImContent ref="ImContent" :im_to_user="to_user" :im_from_user="from_user" :im_base_img_path="base_img_path" :im_ws_url="ws_url" :im_msg_type="msg_type" :im_msg_list="msg_list"></ImContent>
+            <ImContent ref="ImContent" :im_to_user="to_user" :im_from_user="from_user" :im_base_img_path="base_img_path" :im_ws_url="ws_url"
+                       :im_msg_type="msg_type" :im_msg_list="msg_list" :im_history_msg_list="history_msg_list" :im_history_msg_total="Total" @historyMsgList="historyMsgList"></ImContent>
         </Card>
     </div>
 
@@ -59,41 +66,53 @@
     import ImContent from './ImContent.vue';
     export default {
         name: "ImList",
-        props:['im_user_list','im_from_user','im_group_list','im_base_img_path','im_ws_url'],
+        props:['im_user_list','im_from_user','im_group_list','im_base_img_path','im_ws_url','im_msg_list','im_history_msg_list','im_history_msg_total'],
         components:{
             ImContent
         },
         data() {
             return {
                 from_user: this.im_from_user,
-                to_user:'',
+                to_user:{},
                 base_img_path: this.im_base_img_path,
                 ws_url: this.im_ws_url,
                 user_style:false,
                 group_style:false,
                 user_list:this.im_user_list,
                 group_list: this.im_group_list,
+                msg_list:this.im_msg_list,
+                history_msg_list:this.im_history_msg_list,
+                Total:this.im_history_msg_total,
                 list_show:'display:none',
                 msg_type:'p2p',
-                msg_list:[],
-                to_id:'',
+                history_list: []
             }
         },
         mounted: function(){
+            let hm =  localStorage.getItem('history_msg');
+            if(hm != undefined){
+                this.history_list = JSON.parse(hm);
+                console.log('history_list');
+                console.log(hm)
+            }
 
         },
         watch:{
             im_user_list:function (val) {
                 this.user_list = val;
-                console.log("im");
-                console.log(val)
             },
             im_group_list:function (val) {
                 this.group_list = val;
-                console.log("im");
-                console.log(val)
-            }
-
+            },
+            im_msg_list:function(val){
+                this.msg_list = val;
+            },
+            im_history_msg_list: function(val){
+                this.history_msg_list = val;
+            },
+            im_history_msg_total: function(val){
+                this.Total = val;
+            },
         },
         methods:{
             isShow:function () {
@@ -118,37 +137,53 @@
                 }
             },
             openImContent: function (toUser,msgType) {
-                console.log(toUser);
                 this.msg_type = msgType;
-                this.to_user = toUser;
-                this.msgList(msgType);
+                let to = {};
+                if(msgType == 'p2p'){
+                    to.id = toUser.user_id;
+                    to.name =  toUser.user_username;
+                    to.icon = toUser.user_icon;
+                    to.type = 'p2p';
+                }else if(msgType == 'group'){
+                    to.id = toUser.group_id;
+                    to.name =  toUser.group_name;
+                    to.icon =  toUser.group_icon;
+                    to.type = 'group';
+                }
+                this.to_user = to;
+                this.msg_list = [];
+                this.$emit('msgList', this.dataH());
+                this.historyMsg();
                 this.$refs.ImContent.im_modal = true;
             },
-            msgList: function(msgType){
-                this.msg_list = [];
-                if(this.msg_type == 'p2p'){
-                    this.to_id = this.to_user.user_id;
-                }else if(this.msg_type == 'group'){
-                    this.to_id = this.to_user.group_id;
-                }
-                this.$http.get("/msg_list",{
-                    params: {
-                        msg_from_id:  this.from_user.user_id,
-                        msg_to_id: this.to_id,
-                        start_time:0,
-                        end_time:0,
-                        total:10,
-                        msg_type:msgType
+            historyMsgList: function(data){
+                this.$emit('historyMsgList', data);
+            },
+            historyMsg: function(){
+                let hm = localStorage.getItem('history_msg');
+                let nhm = new Array();
+                if(hm != undefined || hm != null){
+                    nhm = JSON.parse(hm);
+                    console.log(nhm);
+                    for(let i=0;i<nhm.length;i++){
+                        if(nhm[i].id == this.to_user.id){
+                            nhm.splice(i,1)
+                        }
                     }
-                    })
-                    .then(res=>{
-                        console.log(res.data);
-                        this.msg_list = res.data;
-                    })
-                    .catch(err=>{
-                        console.log(err)
-                    })
-            }
+                }
+                nhm.unshift(this.to_user);
+                this.history_list = nhm;
+                localStorage.setItem('history_msg',JSON.stringify(nhm))
+            },
+            dataH : function(){
+                let data = {};
+                data.msgType = this.msg_type;
+                data.fromId = this.from_user.user_id;
+                data.toId = this.to_user.id;
+                data.pageNum = 1;
+                data.pageSize = 10;
+                return data;
+            },
         }
     }
 </script>
