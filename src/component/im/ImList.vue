@@ -5,9 +5,9 @@
         </div>
         <Card class="listStyle"  :style="list_show">
             <div class="userHead">
-                <Avatar v-if="from_user.user_icon == '' || from_user.user_icon == undefined" icon="ios-person" />
-                <Avatar v-else :src="touser.user_icon" />
-                <span >{{from_user.user_username}}</span>
+                <Avatar v-if="from_user.icon == '' || from_user.icon == undefined" icon="ios-person" />
+                <Avatar v-else :src="touser.icon" />
+                <span >{{from_user.name}}</span>
                 <Icon type="ios-close" size="36" style="float: right;" @click="listShow"/>
             </div>
             <div class="userBody">
@@ -21,9 +21,9 @@
                                 </div>
                                 <div  v-for="(touser,index) in user_list" :class="user_style == false ? 'display': 'show'" @click="openImContent(touser,'p2p')"
                                      onmouseover="this.className='showBackground'" onmouseout="this.className='show'">
-                                    <Avatar v-if="touser.user_icon == '' || touser.user_icon == undefined" icon="ios-person" />
-                                    <Avatar v-else :src="touser.user_icon" />
-                                    <span >{{touser.user_username}}</span>
+                                    <Avatar v-if="touser.icon == '' || touser.icon == undefined" icon="ios-person" />
+                                    <Avatar v-else :src="touser.icon" />
+                                    <span >{{touser.name}}</span>
                                 </div>
                             </div>
                         </div>
@@ -37,9 +37,9 @@
                                 </div>
                                 <div v-for="(group,index) in group_list" :class="group_style == false ? 'display': 'show'" @click="openImContent(group,'group')"
                                      onmouseover="this.className='showBackground'" onmouseout="this.className='show'">
-                                    <Avatar v-if="group.group_icon == '' || group.group_icon == undefined" icon="ios-person" />
-                                    <Avatar v-else :src="touser.user_icon" />
-                                    <span >{{group.group_name}}</span>
+                                    <Avatar v-if="group.icon == '' || group.icon == undefined" icon="ios-person" />
+                                    <Avatar v-else :src="group.icon" />
+                                    <span >{{group.name}}</span>
                                 </div>
                             </div>
                         </div>
@@ -139,19 +139,12 @@
             },
             openImContent: function (toUser,msgType) {
                 this.msg_type = msgType;
-                let to = {};
                 if(msgType == 'p2p'){
-                    to.id = toUser.user_id;
-                    to.name =  toUser.user_username;
-                    to.icon = toUser.user_icon;
-                    to.type = 'p2p';
+                    toUser.type = 'p2p';
                 }else if(msgType == 'group'){
-                    to.id = toUser.group_id;
-                    to.name =  toUser.group_name;
-                    to.icon =  toUser.group_icon;
-                    to.type = 'group';
+                    toUser.type = 'group';
                 }
-                this.to_user = to;
+                this.to_user = toUser;
                 this.msg_list = [];
                 this.$emit('msgList', this.dataH());
                 this.historyMsg();
@@ -179,7 +172,7 @@
             dataH : function(){
                 let data = {};
                 data.msgType = this.msg_type;
-                data.fromId = this.from_user.user_id;
+                data.fromId = this.from_user.id;
                 data.toId = this.to_user.id;
                 data.pageNum = 1;
                 data.pageSize = 10;

@@ -7,7 +7,7 @@
             <div ref="imContent" style="text-align:center;height: 270px;overflow-y: auto;margin-bottom: 10px" >
                 <!-- Left -->
                 <div v-for="(msg,index) in msg_list">
-                    <div class="sender" v-if="msg.msg_from_id !== from_user.user_id">
+                    <div class="sender" v-if="msg.msg_from_id !== from_user.id">
                         <div>
                             <Avatar v-if="msg.msg_from_content.icon == '' || msg.msg_from_content.icon == undefined" icon="ios-person" />
                             <Avatar v-else :src="msg.msg_from_content.icon" />
@@ -195,7 +195,7 @@
             dataH : function(){
                 let data = {};
                 data.msgType = this.msg_type;
-                data.fromId = this.from_user.user_id;
+                data.fromId = this.from_user.id;
                 data.toId = this.to_user.id;
                 data.pageNum = this.page_num;
                 data.pageSize = this.page_size;
@@ -287,7 +287,7 @@
                 let msg = {};
                 msg.msg_id = utils.uuid();
                 msg.msg_type = msgType;
-                msg.msg_from_id = this.from_user.user_id;
+                msg.msg_from_id = this.from_user.id;
                 msg.msg_from_content = this.userContent('','','');
                 msg.created_at = utils.time10();
                 msg.msg_to_id = toUserId;

@@ -21,14 +21,14 @@
                 user: {},
                 history_msg_list:[],
                 Total:0,
-                base_img_path:'http://192.168.2.223:9001/img/',
-                ws_url:'ws://192.168.2.223:9001/ws',
+                base_img_path:'img/',
+                ws_url:'ws://apidoc.amagic.top/ws',
             }
         },
         mounted: function(){
             let usernew = JSON.parse(localStorage.getItem("user"));
-            this.user.user_id = usernew.UserId;
-            this.user.user_username = usernew.UserUsername;
+            this.user.id = usernew.UserId;
+            this.user.name = usernew.UserUsername;
             this.userList();
             this.groupList();
         },
@@ -41,7 +41,15 @@
                     }
                     })
                     .then(res=>{
-                        this.user_list = res.data
+                        let list = [];
+                        for(let i=0;i<res.data.length;i++){
+                            let d = {};
+                            d.id = res.data[i].user_id;
+                            d.name = res.data[i].user_username;
+                            d.icon = res.data[i].user_icon;
+                            list.push(d);
+                        }
+                        this.user_list = list;
                     })
                     .catch(err=>{
                         console.log(err)
@@ -55,7 +63,15 @@
                     }
                      })
                     .then(res=>{
-                        this.group_list = res.data
+                        let list = [];
+                        for(let i=0;i<res.data.length;i++){
+                            let d = {};
+                            d.id = res.data[i].group_id;
+                            d.name = res.data[i].group_name;
+                            d.icon = res.data[i].group_icon;
+                            list.push(d);
+                        }
+                        this.group_list = list;
                     })
                     .catch(err=>{
                         console.log(err)

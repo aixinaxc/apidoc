@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="be1033c7-a320-4cfa-913a-d7b76bcd8a40" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/axios/axiosIndex.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/axios/axiosIndex.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/component/im/ImContent.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/component/im/ImContent.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/component/im/ImList.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/component/im/ImList.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/component/im/ImTest.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/component/im/ImTest.vue" afterDir="false" />
     </list>
@@ -94,17 +95,17 @@
         <counts>
           <entry key="gitignore" value="9" />
           <entry key="html" value="24" />
-          <entry key="js" value="1427" />
+          <entry key="js" value="1428" />
           <entry key="md" value="137" />
-          <entry key="vue" value="16109" />
+          <entry key="vue" value="16420" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="HTML" value="24" />
-          <entry key="JavaScript" value="1427" />
+          <entry key="JavaScript" value="1428" />
           <entry key="PLAIN_TEXT" value="146" />
-          <entry key="Vue.js" value="16109" />
+          <entry key="Vue.js" value="16420" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.js.language.service.starts">
@@ -122,17 +123,20 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/axios/axiosIndex.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="25" lean-forward="true" selection-start-column="25" selection-end-column="25" />
+            <state relative-caret-position="76">
+              <caret line="4" column="26" selection-start-line="4" selection-start-column="26" selection-end-line="4" selection-end-column="26" />
+              <folding>
+                <element signature="e#0#25#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/component/im/ImList.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="370">
-              <caret line="48" column="40" selection-start-line="48" selection-start-column="40" selection-end-line="48" selection-end-column="40" />
+            <state relative-caret-position="285">
+              <caret line="21" column="52" selection-start-line="21" selection-start-column="46" selection-end-line="21" selection-end-column="52" />
               <folding>
                 <element signature="n#style#0;n#Icon#0;n#div#0;n#Card#0;n#div#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#Tabs#0;n#div#1;n#Card#0;n#div#0;n#template#0;n#!!top" expanded="true" />
@@ -146,11 +150,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/component/im/ImTest.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="482">
-              <caret line="103" column="13" selection-start-line="103" selection-start-column="13" selection-end-line="103" selection-end-column="13" />
+            <state relative-caret-position="399">
+              <caret line="24" column="46" selection-start-line="24" selection-start-column="46" selection-end-line="24" selection-end-column="46" />
             </state>
           </provider>
         </entry>
@@ -158,8 +162,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/component/im/ImContent.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="779">
-              <caret line="86" column="30" selection-start-line="86" selection-start-column="25" selection-end-line="86" selection-end-column="30" />
+            <state relative-caret-position="-665">
+              <caret line="292" column="40" selection-start-line="292" selection-start-column="32" selection-end-line="292" selection-end-column="40" />
               <folding>
                 <element signature="n#style#0;n#p#0;n#Modal#0;n#div#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#0;n#Modal#0;n#div#0;n#template#0;n#!!top" expanded="true" />
@@ -235,7 +239,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>createNotifierCallback</find>
       <find>styleLoaders</find>
       <find>packageConfig</find>
       <find>packageConfignpm i extract-text-webpack-plugin@next -D</find>
@@ -265,6 +268,7 @@
       <find>page_size</find>
       <find>pageSize</find>
       <find>msg_list</find>
+      <find>user_id</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -312,9 +316,9 @@
         <option value="$PROJECT_DIR$/src/component/api/edit.vue" />
         <option value="$PROJECT_DIR$/src/component/user/list.vue" />
         <option value="$PROJECT_DIR$/src/component/im/ImContent.vue" />
+        <option value="$PROJECT_DIR$/src/component/im/ImList.vue" />
         <option value="$PROJECT_DIR$/src/axios/axiosIndex.js" />
         <option value="$PROJECT_DIR$/src/component/im/ImTest.vue" />
-        <option value="$PROJECT_DIR$/src/component/im/ImList.vue" />
       </list>
     </option>
   </component>
@@ -580,12 +584,12 @@
       <workItem from="1536831703139" duration="34045000" />
       <workItem from="1537429004645" duration="14212000" />
       <workItem from="1537832556115" duration="89632000" />
-      <workItem from="1538957657212" duration="66238000" />
+      <workItem from="1538957657212" duration="68655000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="426281000" />
+    <option name="totallyTimeSpent" value="428698000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -604,12 +608,12 @@
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info content_ui="combo" id="Project" order="3" sideWeight="0.49830508" visible="true" weight="0.2528978" />
       <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Terminal" order="1" sideWeight="0.4646997" weight="0.25813448" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="1" sideWeight="0.4646997" visible="true" weight="0.25813448" />
       <window_info anchor="bottom" id="Event Log" order="2" sideWeight="0.51211804" side_tool="true" weight="0.17136659" />
       <window_info anchor="bottom" id="Version Control" order="3" sideWeight="0.49683878" weight="0.329718" />
       <window_info anchor="bottom" id="Message" order="4" />
       <window_info anchor="bottom" id="Find" order="5" sideWeight="0.49841937" weight="0.3297062" />
-      <window_info active="true" anchor="bottom" id="Run" order="6" sideWeight="0.487882" visible="true" weight="0.26681128" />
+      <window_info anchor="bottom" id="Run" order="6" sideWeight="0.487882" weight="0.18655097" />
       <window_info anchor="bottom" id="Debug" order="7" sideWeight="0.49789253" weight="0.2527115" />
       <window_info anchor="bottom" id="Cvs" order="8" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="9" weight="0.4" />
@@ -928,20 +932,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/axios/axiosIndex.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="25" lean-forward="true" selection-start-column="25" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/component/im/ImTest.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="482">
-          <caret line="103" column="13" selection-start-line="103" selection-start-column="13" selection-end-line="103" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/assets/img/def.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
@@ -959,8 +949,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/component/im/ImContent.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="779">
-          <caret line="86" column="30" selection-start-line="86" selection-start-column="25" selection-end-line="86" selection-end-column="30" />
+        <state relative-caret-position="-665">
+          <caret line="292" column="40" selection-start-line="292" selection-start-column="32" selection-end-line="292" selection-end-column="40" />
           <folding>
             <element signature="n#style#0;n#p#0;n#Modal#0;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#0;n#Modal#0;n#div#0;n#template#0;n#!!top" expanded="true" />
@@ -987,8 +977,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/component/im/ImList.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="370">
-          <caret line="48" column="40" selection-start-line="48" selection-start-column="40" selection-end-line="48" selection-end-column="40" />
+        <state relative-caret-position="285">
+          <caret line="21" column="52" selection-start-line="21" selection-start-column="46" selection-end-line="21" selection-end-column="52" />
           <folding>
             <element signature="n#style#0;n#Icon#0;n#div#0;n#Card#0;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#Tabs#0;n#div#1;n#Card#0;n#div#0;n#template#0;n#!!top" expanded="true" />
@@ -998,6 +988,23 @@
             <element signature="n#style#0;n#div#0;n#TabPane#1;n#Tabs#0;n#div#1;n#Card#0;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#TabPane#2;n#Tabs#0;n#div#1;n#Card#0;n#div#0;n#template#0;n#!!top" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/axios/axiosIndex.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="76">
+          <caret line="4" column="26" selection-start-line="4" selection-start-column="26" selection-end-line="4" selection-end-column="26" />
+          <folding>
+            <element signature="e#0#25#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/component/im/ImTest.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="399">
+          <caret line="24" column="46" selection-start-line="24" selection-start-column="46" selection-end-line="24" selection-end-column="46" />
         </state>
       </provider>
     </entry>
