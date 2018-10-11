@@ -120,6 +120,7 @@
                 wsUrl: this.im_ws_url,
                 msg_list:this.im_msg_list,
                 history_msg_list:this.im_history_msg_list,
+                Total:this.im_history_msg_total,
                 from_user: this.im_from_user,
                 to_user:this.im_to_user,
                 msg_type:this.im_msg_type,
@@ -130,7 +131,6 @@
                 search: '',
                 page_num:1,
                 page_size:20,
-                Total:this.im_history_msg_total,
                 time:0
             }
         },
@@ -143,7 +143,6 @@
             formatDate(time) {
                 return utils.formatDateTime(time);
             },
-
         },
         computed: {
             imgUrl(){
@@ -244,6 +243,10 @@
             },
             sendTxt: function(){
                 console.log(this.msg_type);
+                if(this.im_text.length >= 2000){
+                    this.$Message.error('内容太长,请改为其他方式发送');
+                    return;
+                }
                 if(this.msg_type == 'p2p'){
                     this.msgSend('p2p',this.to_user.id,'im_text',this.msgTextContent(this.im_text));
                 }else if(this.msg_type == 'group'){
@@ -304,8 +307,10 @@
                 msg.msg_content_type = msgContentType;
                 msg.msg_content = msgContent;
                 this.rws.send(JSON.stringify(msg));
-                msg.msg_content.file_name = fileUrl;
-                this.msg_list.push(msg);
+                if(msgType != 'client'){
+                    msg.msg_content.file_name = fileUrl;
+                    this.msg_list.push(msg);
+                }
             },
             userContent:function (id,name,icon) {
                 let userContent = {};

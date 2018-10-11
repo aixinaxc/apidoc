@@ -19,7 +19,7 @@
                                     <Icon :type="user_style == false ? 'ios-arrow-forward': 'ios-arrow-down' " />
                                     我的好友
                                 </div>
-                                <div  v-for="(touser,index) in user_list" :class="user_style == false ? 'display': 'show'" @click="openImContent(touser,'p2p')"
+                                <div  v-for="(touser,index) in user_list"  class="show" v-show="user_style == true" @click="openImContent(touser,'p2p')"
                                      onmouseover="this.className='showBackground'" onmouseout="this.className='show'">
                                     <Avatar v-if="touser.icon == '' || touser.icon == undefined" icon="ios-person" />
                                     <Avatar v-else :src="touser.icon" />
@@ -35,7 +35,7 @@
                                     <Icon :type="group_style == false ? 'ios-arrow-forward': 'ios-arrow-down' " />
                                     我的群组
                                 </div>
-                                <div v-for="(group,index) in group_list" :class="group_style == false ? 'display': 'show'" @click="openImContent(group,'group')"
+                                <div v-for="(group,index) in group_list" class="show" v-show="group_style == true"  @click="openImContent(group,'group')"
                                      onmouseover="this.className='showBackground'" onmouseout="this.className='show'">
                                     <Avatar v-if="group.icon == '' || group.icon == undefined" icon="ios-person" />
                                     <Avatar v-else :src="group.icon" />
