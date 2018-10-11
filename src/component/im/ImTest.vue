@@ -21,8 +21,8 @@
                 user: {},
                 history_msg_list:[],
                 Total:0,
-                base_img_path:'img/',
-                ws_url:'ws://apidoc.amagic.top/ws',
+                base_img_path:'http://192.168.2.223:9001/img/',
+                ws_url:'ws://192.168.2.223:9001/ws',
             }
         },
         mounted: function(){

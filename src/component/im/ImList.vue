@@ -6,7 +6,7 @@
         <Card class="listStyle"  :style="list_show">
             <div class="userHead">
                 <Avatar v-if="from_user.icon == '' || from_user.icon == undefined" icon="ios-person" />
-                <Avatar v-else :src="touser.icon" />
+                <Avatar v-else :src="from_user.icon" />
                 <span >{{from_user.name}}</span>
                 <Icon type="ios-close" size="36" style="float: right;" @click="listShow"/>
             </div>
@@ -45,7 +45,6 @@
                         </div>
                     </TabPane>
                     <TabPane label="记录" style="height: 330px">
-
                         <div class="show" v-for="(h,index) in history_list"  @click="openImContent(h,h.type)"
                              onmouseover="this.className='showBackground'" onmouseout="this.className='show'">
                             <Avatar v-if="h.icon == '' || h.icon == undefined" icon="ios-person" />
@@ -96,7 +95,6 @@
                 console.log('history_list');
                 console.log(hm)
             }
-
         },
         watch:{
             im_user_list:function (val) {

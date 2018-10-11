@@ -81,7 +81,7 @@
         </Modal>
 
         <Drawer width="300" title="历史消息" :closable="false" v-model="show_drawer">
-            <div style="height: 95%">
+            <div style="height: 95%;overflow-y: auto;margin-bottom: 10px">
                 <!-- Left -->
                 <div v-for="(msg,index) in history_msg_list">
                     <div style="padding: 5px 0">
@@ -99,8 +99,6 @@
             </div>
             <Page :total="Total" :page-size="page_size"  :current="page_num" @on-change="historyMsgList"  />
         </Drawer>
-
-
     </div>
 </template>
 
@@ -233,8 +231,8 @@
                    if(msgData.msg_type == 'client'){
 
                    }else if(msgData.msg_type == 'p2p'){
-                       if((this.to_user.id == msgData.msg_to_id && this.from_user.user_id == msgData.msg_from_id) ||
-                           (this.to_user.id == msgData.msg_from_id && this.from_user.user_id == msgData.msg_to_id) ){
+                       if((this.to_user.id == msgData.msg_to_id && this.from_user.id == msgData.msg_from_id) ||
+                           (this.to_user.id == msgData.msg_from_id && this.from_user.id == msgData.msg_to_id) ){
                            this.msg_list.push(msgData);
                        }
                    }else if(msgData.msg_type == 'group'){
