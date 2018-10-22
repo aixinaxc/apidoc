@@ -4,6 +4,7 @@
         <div style="width: 100%;height: 64px;text-align: left;">
             <Button type="primary" @click="apiEdit" ghost>编辑API</Button>
             <Button type="error" @click="openDelete" ghost>删除API</Button>
+            <Button type="error" @click="exportApi" ghost>导出API</Button>
         </div>
         <div v-html="api_show_content">
         </div>
@@ -22,6 +23,10 @@
 </template>
 
 <script>
+
+    import htmlDocx from 'html-docx-js/dist/html-docx.js';
+
+
     export default {
         inject:["reload"],
         data() {
@@ -76,7 +81,31 @@
             },
             apiEdit: function () {
                 this.$router.push({path:'/home/api/edit', query: { api_id: this.$route.query.api_id }})
+            },
+            exportApi: function () {
+                let _this = this
+
+                let c = htmlDocx.asBlob(this.api_show_content);
+                console.log("h2d:");
+                console.log(c);
+                this.doSave(c,c.type)
+
+            },
+            doSave: function (value, type) {
+                var blob;
+                if (typeof window.Blob == "function") {
+                    blob = new Blob([value], {type: type});
+                } else {
+                    var BlobBuilder = window.BlobBuilder || window.MozBlobBuilder || window.WebKitBlobBuilder || window.MSBlobBuilder;
+                    var bb = new BlobBuilder();
+                    bb.append(value);
+                    blob = bb.getBlob(type);
+                }
+                var URL = window.URL || window.webkitURL;
+                var bloburl = URL.createObjectURL(blob);
+                location.href = bloburl;
             }
+
         },
 
     }
