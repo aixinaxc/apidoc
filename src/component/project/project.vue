@@ -110,7 +110,7 @@
                     params: {
                         userId:  juser.UserId
                     }
-                })
+                    })
                     .then(res=>{
                         this.projectListArr = res.data;
                         console.log(this.projectListArr);

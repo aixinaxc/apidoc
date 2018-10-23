@@ -13,6 +13,10 @@
                             <Icon type="ios-keypad"></Icon>
                             <span @click="apiEdit"> 新增API</span>
                         </MenuItem>
+                        <MenuItem name="3">
+                            <Icon type="ios-download-outline" />
+                            <span @click="exportProjectApi"> 导出API</span>
+                        </MenuItem>
                     </div>
                 </div>
                 <Dropdown trigger="click"  style="float:right;" >
@@ -80,6 +84,7 @@
     </div>
 </template>
 <script>
+    import utils from '../../assets/js/utils';
     export default {
         inject:["reload"],
         data () {
@@ -197,6 +202,30 @@
             },
             project: function () {
                 this.$router.push({path: '/project'})
+            },
+            exportProjectApi: function () {
+                let user = localStorage.getItem("user");
+                let juser = JSON.parse(user);
+                let allContent = '';
+                this.$http.get("/api/list",{
+                    params: {
+                        userId:  juser.project_id
+                    }
+                    })
+                    .then(res=>{
+                        for(let i=0;i<res.data.length;i++){
+                            let name = '<h2>' + res.data[i].api_name + '</h2>';
+                            name = name + res.data[i].api_show_content + '</br>';
+                            name = name + '<span>-----------------------------------------------------------------------------</span>';
+                            allContent = allContent + name;
+                        }
+                        console.log("======================");
+                        console.log(allContent);
+                        utils.h2d(allContent)
+                    })
+                    .catch(err=>{
+                        console.log(err)
+                    })
             }
         }
     }

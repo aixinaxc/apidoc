@@ -4,7 +4,7 @@
         <div style="width: 100%;height: 64px;text-align: left;">
             <Button type="primary" @click="apiEdit" ghost>编辑API</Button>
             <Button type="error" @click="openDelete" ghost>删除API</Button>
-            <Button type="error" @click="exportApi" ghost>导出API</Button>
+            <Button type="success"  @click="exportApi" ghost>导出API</Button>
         </div>
         <div v-html="api_show_content">
         </div>
@@ -24,7 +24,7 @@
 
 <script>
 
-    import htmlDocx from 'html-docx-js/dist/html-docx.js';
+    import utils from '../../assets/js/utils';
 
 
     export default {
@@ -34,6 +34,7 @@
                 api_show_content:"",
                 delete_modal: false,
                 loading: true,
+                api_name : ''
             }
         },
         mounted: function(){
@@ -72,7 +73,8 @@
                         }
                     })
                         .then(res=>{
-                            this.api_show_content = res.data.api_show_content
+                            this.api_name = res.data.api_name;
+                            this.api_show_content = res.data.api_show_content;
                         })
                         .catch(err=>{
                             console.log(err)
@@ -83,28 +85,11 @@
                 this.$router.push({path:'/home/api/edit', query: { api_id: this.$route.query.api_id }})
             },
             exportApi: function () {
-                let _this = this
-
-                let c = htmlDocx.asBlob(this.api_show_content);
-                console.log("h2d:");
-                console.log(c);
-                this.doSave(c,c.type)
-
+                let name = '<h2>' + this.api_name + '</h2>';
+                name = name + this.api_show_content;
+                utils.h2d(name)
             },
-            doSave: function (value, type) {
-                var blob;
-                if (typeof window.Blob == "function") {
-                    blob = new Blob([value], {type: type});
-                } else {
-                    var BlobBuilder = window.BlobBuilder || window.MozBlobBuilder || window.WebKitBlobBuilder || window.MSBlobBuilder;
-                    var bb = new BlobBuilder();
-                    bb.append(value);
-                    blob = bb.getBlob(type);
-                }
-                var URL = window.URL || window.webkitURL;
-                var bloburl = URL.createObjectURL(blob);
-                location.href = bloburl;
-            }
+
 
         },
 

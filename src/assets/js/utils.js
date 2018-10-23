@@ -1,3 +1,4 @@
+import htmlDocx from 'html-docx-js/dist/html-docx.js';
 const uuid = function () {
     let s = [];
     let hexDigits = "0123456789abcdef";
@@ -10,13 +11,13 @@ const uuid = function () {
 
     let u = s.join("");
     return u;
-}
+};
 
 const time10 = function () {
     let timestamp = Date.parse(new Date());
     timestamp = timestamp / 1000;
     return timestamp;
-}
+};
 
 const formatDateTime = function (timeStamp) {
     let date = new Date();
@@ -33,7 +34,7 @@ const formatDateTime = function (timeStamp) {
     minute = minute < 10 ? ('0' + minute) : minute;
     second = second < 10 ? ('0' + second) : second;
     return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;
-}
+};
 
 const getObjectURL = function (file) {
     var url = null;
@@ -45,9 +46,32 @@ const getObjectURL = function (file) {
         url = window.webkitURL.createObjectURL(file);
     }
     return url;
+};
+
+
+const h2d = function (content) {
+    let c = htmlDocx.asBlob(content);
+    console.log("h2d:");
+    console.log(c);
+    blob2File(c,c.type)
+};
+
+const blob2File= function (value, type) {
+    let blob;
+    if (typeof window.Blob == "function") {
+        blob = new Blob([value], {type: type});
+    } else {
+        var BlobBuilder = window.BlobBuilder || window.MozBlobBuilder || window.WebKitBlobBuilder || window.MSBlobBuilder;
+        var bb = new BlobBuilder();
+        bb.append(value);
+        blob = bb.getBlob(type);
+    }
+    let URL = window.URL || window.webkitURL;
+    let bloburl = URL.createObjectURL(blob);
+    location.href = bloburl;
 }
 
 
 export default {
-    uuid, time10, formatDateTime,getObjectURL
+    uuid, time10, formatDateTime,getObjectURL,h2d
 }
