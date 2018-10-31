@@ -163,10 +163,10 @@
             this.projectLists();
         },
         methods:{
-            userList: function(){
+            userList: function(ps){
                 this.$http.get("/user/list",{
                     params: {
-                        page_num: this.pageNum,
+                        page_num: ps || 1,
                         page_size: this.pageSize
                     }
                     })
