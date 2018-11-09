@@ -8,6 +8,7 @@ import ApiEdit from '../component/api/edit.vue';
 import Home from '../component/home/home.vue';
 import UserList from '../component/user/list.vue';
 import ImList from '../component/im/ImTest.vue';
+import SortList from '../component/sort/list.vue';
 
 export const pageLogin = {
     path: '/',
@@ -55,6 +56,10 @@ export const pageHome = {
         {
             path: 'user/list',
             component: UserList
+        },
+        {
+            path: 'sort/list',
+            component: SortList
         }
     ]
 };

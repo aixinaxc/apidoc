@@ -44,19 +44,24 @@
 
         <Layout style="min-height: 100vh">
             <Sider hide-trigger style="margin-top: 88px;background: white;">
-
                 <Menu ref="side_menu"  theme="light" width="auto" :open-names="openNames" :active-name="activeName" :accordion="isAccordion"  @on-select="apiContent"  @on-open-change="openMenu" style="position: static;">
                     <Submenu v-for="(menu,index) in menuList" :key="index" :name="menu.sort_id"  >
                         <template slot="title">
-
                             <span class="spanStyle"><Icon type="ios-navigate"></Icon>{{menu.sort_name}}</span>
                         </template>
                         <MenuItem v-for="(child,index) in menuChildList" :key="index" :name="child.api_id" v-if="menu.sort_id == child.sort_id" >
-                            <span class="spanStyle">{{child.api_name}}</span>
+                            <span >{{child.api_name}}</span>
                         </MenuItem>
+                        <Submenu v-for="(m,index) in menu.children" :key="index" :name="m.sort_id"  >
+                            <template slot="title">
+                                <span >{{m.sort_name}}</span>
+                            </template>
+                            <MenuItem v-for="(c,index) in menuChildList" :key="index" :name="c.api_id" v-if="m.sort_id == c.sort_id" >
+                                <span >{{c.api_name}}</span>
+                            </MenuItem>
+                        </Submenu>
                     </Submenu>
                 </Menu>
-
             </Sider>
             <Content style="margin-top:88px;background: #fff;padding: 1% 5%">
                 <keep-alive>
@@ -119,12 +124,11 @@
             this.username = juser.UserUsername;
             this.userId = juser.UserId;
             this.formItem.project_id = juser.project_id;
-
-
         },
         methods : {
             openEdit: function () {
-                this.edit_modal = true;
+                //this.edit_modal = true;
+                this.$router.push({path:'/home/sort/list', query: { project_id: this.formItem.project_id }})
             },
             closeEdit: function(){
                 if(this.formItem.sort_name == undefined || this.formItem.sort_name == null || this.formItem.sort_name == ""){
@@ -156,6 +160,7 @@
                         console.log(res.data.sort);
                         console.log(res.data.api);
                         this.menuList = res.data.sort;
+                        this.menuList = this.toTree(this.menuList);
                         this.menuChildList = res.data.api;
 
                         let open_names = sessionStorage.getItem('menu_opennames').split("");
@@ -226,7 +231,34 @@
                     .catch(err=>{
                         console.log(err)
                     })
+            },
+            toTree: function (data) {
+                // 删除 所有 children,以防止多次调用
+                data.forEach(function (item) {
+                    delete item.children;
+                });
+
+                // 将数据存储为 以 id 为 KEY 的 map 索引数据列
+                var map = {};
+                data.forEach(function (item) {
+                    map[item.sort_id] = item;
+                });
+//        console.log(map);
+                var val = [];
+                data.forEach(function (item) {
+                    // 以当前遍历项，的pid,去map对象中找到索引的id
+                    var parent = map[item.sort_pid];
+                    // 好绕啊，如果找到索引，那么说明此项不在顶级当中,那么需要把此项添加到，他对应的父级中
+                    if (parent) {
+                        (parent.children || ( parent.children = [] )).push(item);
+                    } else {
+                        //如果没有在map中找到对应的索引ID,那么直接把 当前的item添加到 val结果集中，作为顶级
+                        val.push(item);
+                    }
+                });
+                return val;
             }
+
         }
     }
 </script>
