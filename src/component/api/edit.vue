@@ -4,6 +4,7 @@
             <Button type="primary" @click="apiSave" ghost>保存API</Button>
             <Button type="success" @click="apiTemplate" ghost>模板API</Button>
             <Button type="warning" @click="openJsonModel" ghost>JSON格式化</Button>
+            <Button type="error" @click="openJsonTable" ghost>JSON数据转表格</Button>
         </div>
         <div style="width: 100%;height: 64px;text-align: left;" >
             <Form :model="formItem" :label-width="80" inline>
@@ -26,12 +27,26 @@
                 <span>JSON 格式化</span>
             </p>
             <div style="text-align:center">
-                <Input v-model="json_str" placeholder="请输入项目名称..." type="textarea" :autosize="{minRows: 15,maxRows: 30}"></Input>
+                <Input v-model="json_str" placeholder="请输入json字符串..." type="textarea" :autosize="{minRows: 15,maxRows: 30}"></Input>
             </div>
             <div slot="footer">
 
             </div>
         </Modal>
+
+        <Modal v-model="json_to_table" width="360">
+            <p slot="header" style="color:#f60;text-align:center">
+                <Icon type="ios-information-circle"></Icon>
+                <span>JSON 格式化</span>
+            </p>
+            <div style="text-align:center">
+                <Input v-model="json_table" placeholder="请输入json字符串..." type="textarea" :autosize="{minRows: 15,maxRows: 30}"></Input>
+            </div>
+            <div slot="footer">
+                <Button type="primary" @click="trm" >转换</Button>
+            </div>
+        </Modal>
+
     </div>
 </template>
 
@@ -46,9 +61,12 @@
                 text: this.$store.state.text,
                 split1: 0.5,
                 value:'',
+                json_to_table:false,
                 api_edit_content: '',
                 api_show_content: '',
                 json_str:'',
+                json_table:'',
+                json_table_data:'',
                 json_modal: false,
                 formItem : {
                     api_name : '',
@@ -137,7 +155,7 @@
         watch:{
             json_str : function (v) {
                 console.log(v);
-                this.json_str = JSON.stringify(JSON.parse(v), null, 4);
+                this.json_str = JSON.stringify(JSON.parse(v), null, 2);
             }
         },
         methods: {
@@ -226,6 +244,49 @@
             },
             openJsonModel: function () {
                 this.json_modal = true
+            },
+            openJsonTable: function () {
+                this.json_to_table = true
+            },
+            trm: function(){
+                try {
+                    let jsonData = JSON.parse(this.json_table);
+                    console.log( jsonData);
+                    this.json_table = '|参数|类型|描述|\n|:-------|:-------|:-------|\n';
+                    this.Change(jsonData);
+                    console.log( this.json_table);
+                } catch (e) {
+                    console.log( e);
+                    this.$Message.error('Json解析失败');
+                }
+            },
+            Change : function(data){
+                let that =  this;
+                let level;
+                let level_str = "- ";
+                if (arguments.length > 1) {
+
+                    arguments[1] > 0 ? level = arguments[1] : level = 1;
+                    for (let i = 0; i < level; i++) {
+                        level_str += "- ";
+                    }
+                }
+
+                for (let key in data) {
+                    let value = data[key];
+                    let type = typeof(value);
+                    if (type == "object") {
+                        that.json_table += '| ' + level_str + key + ' |' + type + '  | 无 |\n';
+                        if (value instanceof Array) {
+                            let j = level + 1;
+                            this.Change(value[0], j);
+                            continue;
+                        }
+                        this.Change(value, level);
+                    } else {
+                        that.json_table += '| ' + key + ' | ' + type + '| 无 |\n';
+                    }
+                }
             }
         }
 

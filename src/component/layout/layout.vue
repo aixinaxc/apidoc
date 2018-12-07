@@ -3,7 +3,7 @@
         <Header style="position: fixed; width: 100%;z-index:1000;min-width: 800px;">
             <Menu mode="horizontal" theme="dark" active-name="1">
                 <div style="float: left;display: flex">
-                    <div class="logo" ></div>
+                    <div class="logo" @click="project"></div>
                     <div class="layout-nav" >
                         <MenuItem name="1" >
                             <Icon type="ios-navigate"></Icon>
