@@ -19,7 +19,7 @@
             </Form>
         </div>
         <div style="width:auto;max-width: 900px;height:100%;">
-            <mavon-editor :toolbars="toolbars1" :ishljs = "true" v-model="value" @change="editData" style="height:600px;z-index:899"/>
+            <mavon-editor ref="md" :toolbars="toolbars1" :ishljs = "true" v-model="value" @change="editData" @imgAdd="uploadImg" style="height:600px;z-index:899"/>
         </div>
         <Modal v-model="json_modal" width="360">
             <p slot="header" style="color:#f60;text-align:center">
@@ -53,6 +53,8 @@
 <script>
     import { mavonEditor } from 'mavon-editor'
     import 'mavon-editor/dist/css/index.css'
+    import axios from 'axios'
+    import jsMd5 from 'js-md5'
     export default {
         name: "edit",
         inject:["reload"],
@@ -287,6 +289,20 @@
                         that.json_table += '| ' + key + ' | ' + type + '| 无 |\n';
                     }
                 }
+            },
+            uploadImg : function (pos, $file) {
+                let instance = axios.create();
+                let formdata = new FormData();
+                formdata.append('file', $file);
+                instance.post("/api/upload",formdata,
+                    {headers:{'Content-Type':'multipart/form-data'}})
+                    .then(res=>{
+                        console.log(res.data.data);
+                        this.$refs.md.$img2Url(pos, "/"+res.data.data);
+                    })
+                    .catch(err=>{
+                        console.log(err)
+                    })
             }
         }
 
