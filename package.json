@@ -11,7 +11,7 @@
   "author": "aixinaxc",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "babel-plugin-import": "^1.8.0",
     "browser-md5-file": "^1.0.0",
     "build": "^0.1.4",
